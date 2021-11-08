@@ -2,25 +2,64 @@
   import "bootswatch/dist/litera/bootstrap.min.css";
   import logo from "./assets/svelte.png";
   import Counter from "./lib/Counter.svelte";
+  import Home from "./lib/Home.svelte";
+  import Upload from "./lib/Upload.svelte";
+  import Charts from "./lib/Charts.svelte";
+  import { Router, Link, Route } from "svelte-routing";
 </script>
 
-<main>
-  <img src={logo} alt="Svelte Logo" />
-  <h1>Hello Typescript!</h1>
+<Router>
+  <main>
+    <nav class="navbar navbar-expand-lg navbar-dark bg-primary">
+      <div class="container-fluid">
+        <Link class="navbar-brand" to="">Vocal Journal</Link>
+        <button
+          class="navbar-toggler"
+          type="button"
+          data-bs-toggle="collapse"
+          data-bs-target="#navbarColor01"
+          aria-controls="navbarColor01"
+          aria-expanded="false"
+          aria-label="Toggle navigation"
+        >
+          <span class="navbar-toggler-icon" />
+        </button>
 
-  <Counter />
-
-  <p>
-    Visit <a href="https://svelte.dev">svelte.dev</a> to learn how to build Svelte
-    apps.
-  </p>
-
-  <p>
-    Check out <a href="https://github.com/sveltejs/kit#readme">SvelteKit</a> for
-    the officially supported framework, also powered by Vite!
-  </p>
-  <button type="button" class="btn btn-primary">Primary</button>
-</main>
+        <div class="collapse navbar-collapse" id="navbarColor01">
+          <ul class="navbar-nav me-auto">
+            <li class="nav-item">
+              <Link class="nav-link active" to="/"
+                >Home
+                <span class="visually-hidden">(current)</span>
+              </Link>
+            </li>
+            <li class="nav-item">
+              <Link class="nav-link" to="upload">Upload</Link>
+            </li>
+            <li class="nav-item">
+              <Link class="nav-link" to="charts">Charts</Link>
+            </li>
+          </ul>
+          <form class="d-flex">
+            <input
+              class="form-control me-sm-2"
+              type="text"
+              placeholder="Search"
+            />
+            <button class="btn btn-dark my-2 my-sm-0" type="submit"
+              >Search</button
+            >
+          </form>
+        </div>
+      </div>
+    </nav>
+    <div>
+      <Route path="upload" component={Upload} />
+      <Route path="charts" component={Charts} />
+      <Route path="/"><Home /></Route>
+    </div>
+  </main>
+</Router>
 
 <style>
   :root {
@@ -30,7 +69,6 @@
 
   main {
     text-align: center;
-    padding: 1em;
     margin: 0 auto;
   }
 
