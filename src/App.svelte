@@ -5,6 +5,7 @@
   import Home from "./lib/Home.svelte";
   import Upload from "./lib/Upload.svelte";
   import Charts from "./lib/Charts.svelte";
+  import Login from "./lib/Login.svelte";
   import { Router, Link, Route } from "svelte-routing";
 </script>
 
@@ -39,6 +40,9 @@
             <li class="nav-item">
               <Link class="nav-link" to="charts">Charts</Link>
             </li>
+            <li class="nav-item">
+              <Link class="nav-link" to="login">Login</Link>
+            </li>
           </ul>
           <form class="d-flex">
             <input
@@ -56,6 +60,7 @@
     <div>
       <Route path="upload" component={Upload} />
       <Route path="charts" component={Charts} />
+      <Route path="login" component={Login} />
       <Route path="/"><Home /></Route>
     </div>
   </main>
