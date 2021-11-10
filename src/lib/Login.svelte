@@ -12,27 +12,22 @@
   let user;
   const unsubscribe = authState(auth).subscribe((u) => {
     user = u;
-    console.log("user = u");
     userStatus.set(user);
-    console.log("userStatus initial", { user_status });
+    console.log("user_status subscribed", { user_status });
   });
-  function login() {
-    signInAnonymously(auth);
+  async function login() {
+    console.log("log in");
+    await signInAnonymously(auth);
+  }
+  async function logout() {
+    console.log("log out");
+    await auth.signOut();
   }
 </script>
 
 <main>
   {#if user_status}
-    <button
-      type="button"
-      class="btn btn-dark"
-      on:click={() => {
-        console.log("clicked logout");
-        auth.signOut();
-        // userStatus.set(user);
-        console.log("userStatus logout", { user_status });
-      }}>Logout</button
-    >
+    <button type="button" class="btn btn-dark" on:click={logout}>Logout</button>
     <hr />
   {:else}
     <button type="button" class="btn btn-dark" on:click={login}>
