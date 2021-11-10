@@ -7,6 +7,12 @@
   import Charts from "./lib/Charts.svelte";
   import Login from "./lib/Login.svelte";
   import { Router, Link, Route } from "svelte-routing";
+  import { userStatus } from "./stores";
+
+  let user_status;
+  userStatus.subscribe((value) => {
+    user_status = value;
+  });
 </script>
 
 <Router>
@@ -57,6 +63,7 @@
         </div>
       </div>
     </nav>
+    <div>user_status: {user_status}</div>
     <div>
       <Route path="upload" component={Upload} />
       <Route path="charts" component={Charts} />
