@@ -3,15 +3,18 @@
   import { signInAnonymously } from "firebase/auth";
   import { authState } from "rxfire/auth";
   import { userStatus } from "../stores";
-  // let user_status;
-  // const unsubscribe = authState(auth).subscribe((u) => (user_status = u));
+
+  let user_status;
+  userStatus.subscribe((value) => {
+    user_status = value;
+  });
 
   let user;
   const unsubscribe = authState(auth).subscribe((u) => {
     user = u;
     console.log("user = u");
     userStatus.set(user);
-    console.log("userStatus initial", { userStatus });
+    console.log("userStatus initial", { user_status });
   });
   function login() {
     signInAnonymously(auth);
@@ -19,7 +22,7 @@
 </script>
 
 <main>
-  {#if user}
+  {#if user_status}
     <button
       type="button"
       class="btn btn-dark"
@@ -27,7 +30,7 @@
         console.log("clicked logout");
         auth.signOut();
         // userStatus.set(user);
-        console.log("userStatus logout", { userStatus });
+        console.log("userStatus logout", { user_status });
       }}>Logout</button
     >
     <hr />
