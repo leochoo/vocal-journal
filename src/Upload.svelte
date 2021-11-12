@@ -1,5 +1,5 @@
 <script>
-  import { storage } from "../firebase.js";
+  import { storage, db } from "../firebase.js";
   import {
     ref,
     uploadBytes,
@@ -7,7 +7,6 @@
     getDownloadURL,
   } from "firebase/storage";
   import { doc, setDoc, addDoc, collection } from "firebase/firestore";
-  import { db } from "../firebase.js";
 
   let loading = false;
   let newAudio = null;
