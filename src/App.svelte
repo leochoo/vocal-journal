@@ -1,11 +1,11 @@
 <script lang="ts">
   import "bootswatch/dist/litera/bootstrap.min.css";
   import logo from "./assets/svelte.png";
-  import Counter from "./lib/Counter.svelte";
-  import Home from "./lib/Home.svelte";
-  import Upload from "./lib/Upload.svelte";
-  import Charts from "./lib/Charts.svelte";
-  import Login from "./lib/Login.svelte";
+  import Counter from "./Counter.svelte";
+  import Home from "./Home.svelte";
+  import Upload from "./Upload.svelte";
+  import Charts from "./Charts.svelte";
+  import Login from "./Login.svelte";
   import { Router, Link, Route } from "svelte-routing";
   import { userStatus } from "./stores";
 
