@@ -106,8 +106,10 @@
     const response = await fetch(
       "http://asia-northeast1-vocal-journal.cloudfunctions.net/function-0"
     );
+    // console.log(response);
     const data = await response.json();
-    console.log(data);
+    // const data = await response.body.values;
+    console.log("data: ", data);
   }
 </script>
 
