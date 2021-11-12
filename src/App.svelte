@@ -1,7 +1,6 @@
 <script lang="ts">
   import "bootswatch/dist/litera/bootstrap.min.css";
   import logo from "./assets/svelte.png";
-  import Counter from "./Counter.svelte";
   import Home from "./Home.svelte";
   import Upload from "./Upload.svelte";
   import Charts from "./Charts.svelte";
@@ -65,10 +64,10 @@
     </nav>
     <div>user_status: {user_status}</div>
     <div>
-      {#if user_status}
-        <Route path="upload" component={Upload} />
-        <Route path="charts" component={Charts} />
-      {/if}
+      <!-- {#if user_status} -->
+      <!-- {/if} -->
+      <Route path="upload" component={Upload} />
+      <Route path="charts" component={Charts} />
       <Route path="login" component={Login} />
       <Route path="/"><Home /></Route>
     </div>

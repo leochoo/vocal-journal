@@ -1,8 +1,8 @@
 <script>
-  import { auth } from "../../firebase.js";
+  import { auth } from "../firebase.js";
   import { signInAnonymously } from "firebase/auth";
   import { authState } from "rxfire/auth";
-  import { userStatus } from "../stores";
+  import { userStatus } from "./stores";
 
   let user_status;
   userStatus.subscribe((value) => {
