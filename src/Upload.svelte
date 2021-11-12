@@ -104,7 +104,7 @@
 
   async function testTriggerCloudFunction() {
     const response = await fetch(
-      "https://asia-northeast1-vocal-journal.cloudfunctions.net/function-0"
+      "http://asia-northeast1-vocal-journal.cloudfunctions.net/function-0"
     );
     const data = await response.json();
     console.log(data);
@@ -134,4 +134,8 @@
   <button type="text" on:click={() => upload()}>Send</button>
 
   <div>{uploadStatus}</div>
+
+  <button type="text" on:click={() => testTriggerCloudFunction()}
+    >Test Trigger</button
+  >
 </main>
