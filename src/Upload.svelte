@@ -99,6 +99,16 @@
       audioURL: downloadURL,
     });
     console.log(newAudioURL);
+    // trigger cloud function
+    testTriggerCloudFunction();
+  }
+
+  async function testTriggerCloudFunction() {
+    const response = await fetch(
+      "https://asia-northeast1-vocal-journal.cloudfunctions.net/function-0"
+    );
+    const data = await response.json();
+    console.log(data);
   }
 </script>
 
