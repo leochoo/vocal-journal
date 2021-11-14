@@ -1,0 +1,114 @@
+[debug] [2021-11-14T13:05:49.925Z] ----------------------------------------------------------------------
+[debug] [2021-11-14T13:05:49.927Z] Command:       /Users/leochoo/.nvm/versions/node/v14.17.1/bin/node /Users/leochoo/.nvm/versions/node/v14.17.1/bin/firebase emulators:start --only functions
+[debug] [2021-11-14T13:05:49.927Z] CLI Version:   9.22.0
+[debug] [2021-11-14T13:05:49.927Z] Platform:      darwin
+[debug] [2021-11-14T13:05:49.927Z] Node Version:  v14.17.1
+[debug] [2021-11-14T13:05:49.928Z] Time:          Sun Nov 14 2021 22:05:49 GMT+0900 (Japan Standard Time)
+[debug] [2021-11-14T13:05:49.928Z] ----------------------------------------------------------------------
+[debug] 
+[debug] [2021-11-14T13:05:49.976Z] > command requires scopes: ["email","openid","https://www.googleapis.com/auth/cloudplatformprojects.readonly","https://www.googleapis.com/auth/firebase","https://www.googleapis.com/auth/cloud-platform"]
+[debug] [2021-11-14T13:05:49.976Z] > authorizing via signed-in user (leochoodev@gmail.com)
+[info] i  emulators: Starting emulators: functions {"metadata":{"emulator":{"name":"hub"},"message":"Starting emulators: functions"}}
+[debug] [2021-11-14T13:05:49.992Z] [hub] writing locator at /var/folders/kf/40l927h96p76kx75pv7j1gvm0000gn/T/hub-vocal-journal.json
+[warn] ⚠  functions: The following emulators are not running, calls to these services from the Functions emulator will affect production: auth, firestore, database, hosting, pubsub, storage {"metadata":{"emulator":{"name":"functions"},"message":"The following emulators are not running, calls to these services from the Functions emulator will affect production: \u001b[1mauth, firestore, database, hosting, pubsub, storage\u001b[22m"}}
+[info] i  emulators: Shutting down emulators. {"metadata":{"emulator":{"name":"hub"},"message":"Shutting down emulators."}}
+[info] i  functions: Stopping Functions Emulator {"metadata":{"emulator":{"name":"functions"},"message":"Stopping Functions Emulator"}}
+[info] i  hub: Stopping emulator hub {"metadata":{"emulator":{"name":"hub"},"message":"Stopping emulator hub"}}
+[debug] [2021-11-14T13:05:50.126Z] Error: Cannot find module '/Users/leochoo/dev/vocal-journal/functions/package.json'
+Require stack:
+- /Users/leochoo/.nvm/versions/node/v14.17.1/lib/node_modules/firebase-tools/lib/emulator/functionsEmulator.js
+- /Users/leochoo/.nvm/versions/node/v14.17.1/lib/node_modules/firebase-tools/lib/emulator/controller.js
+- /Users/leochoo/.nvm/versions/node/v14.17.1/lib/node_modules/firebase-tools/lib/emulator/commandUtils.js
+- /Users/leochoo/.nvm/versions/node/v14.17.1/lib/node_modules/firebase-tools/lib/commands/database-get.js
+- /Users/leochoo/.nvm/versions/node/v14.17.1/lib/node_modules/firebase-tools/lib/commands/index.js
+- /Users/leochoo/.nvm/versions/node/v14.17.1/lib/node_modules/firebase-tools/lib/index.js
+- /Users/leochoo/.nvm/versions/node/v14.17.1/lib/node_modules/firebase-tools/lib/bin/firebase.js
+    at Function.Module._resolveFilename (internal/modules/cjs/loader.js:902:15)
+    at Function.Module._load (internal/modules/cjs/loader.js:746:27)
+    at Module.require (internal/modules/cjs/loader.js:974:19)
+    at require (internal/modules/cjs/helpers.js:92:18)
+    at FunctionsEmulator.askInstallNodeVersion (/Users/leochoo/.nvm/versions/node/v14.17.1/lib/node_modules/firebase-tools/lib/emulator/functionsEmulator.js:466:21)
+    at FunctionsEmulator.start (/Users/leochoo/.nvm/versions/node/v14.17.1/lib/node_modules/firebase-tools/lib/emulator/functionsEmulator.js:178:32)
+    at Function.start (/Users/leochoo/.nvm/versions/node/v14.17.1/lib/node_modules/firebase-tools/lib/emulator/registry.js:16:24)
+    at startEmulator (/Users/leochoo/.nvm/versions/node/v14.17.1/lib/node_modules/firebase-tools/lib/emulator/controller.js:90:39)
+    at Object.startAll (/Users/leochoo/.nvm/versions/node/v14.17.1/lib/node_modules/firebase-tools/lib/emulator/controller.js:273:15)
+    at processTicksAndRejections (internal/process/task_queues.js:95:5)
+    at async Command.actionFn (/Users/leochoo/.nvm/versions/node/v14.17.1/lib/node_modules/firebase-tools/lib/commands/emulators-start.js:26:9)
+[error] 
+[error] Error: An unexpected error has occurred.
+[debug] [2021-11-14T13:06:05.544Z] ----------------------------------------------------------------------
+[debug] [2021-11-14T13:06:05.546Z] Command:       /Users/leochoo/.nvm/versions/node/v14.17.1/bin/node /Users/leochoo/.nvm/versions/node/v14.17.1/bin/firebase emulators:start
+[debug] [2021-11-14T13:06:05.546Z] CLI Version:   9.22.0
+[debug] [2021-11-14T13:06:05.546Z] Platform:      darwin
+[debug] [2021-11-14T13:06:05.546Z] Node Version:  v14.17.1
+[debug] [2021-11-14T13:06:05.547Z] Time:          Sun Nov 14 2021 22:06:05 GMT+0900 (Japan Standard Time)
+[debug] [2021-11-14T13:06:05.547Z] ----------------------------------------------------------------------
+[debug] 
+[debug] [2021-11-14T13:06:05.595Z] > command requires scopes: ["email","openid","https://www.googleapis.com/auth/cloudplatformprojects.readonly","https://www.googleapis.com/auth/firebase","https://www.googleapis.com/auth/cloud-platform"]
+[debug] [2021-11-14T13:06:05.595Z] > authorizing via signed-in user (leochoodev@gmail.com)
+[info] i  emulators: Starting emulators: functions, hosting {"metadata":{"emulator":{"name":"hub"},"message":"Starting emulators: functions, hosting"}}
+[debug] [2021-11-14T13:06:05.611Z] [hub] writing locator at /var/folders/kf/40l927h96p76kx75pv7j1gvm0000gn/T/hub-vocal-journal.json
+[warn] ⚠  functions: The following emulators are not running, calls to these services from the Functions emulator will affect production: auth, firestore, database, pubsub, storage {"metadata":{"emulator":{"name":"functions"},"message":"The following emulators are not running, calls to these services from the Functions emulator will affect production: \u001b[1mauth, firestore, database, pubsub, storage\u001b[22m"}}
+[info] i  emulators: Shutting down emulators. {"metadata":{"emulator":{"name":"hub"},"message":"Shutting down emulators."}}
+[info] i  functions: Stopping Functions Emulator {"metadata":{"emulator":{"name":"functions"},"message":"Stopping Functions Emulator"}}
+[info] i  hub: Stopping emulator hub {"metadata":{"emulator":{"name":"hub"},"message":"Stopping emulator hub"}}
+[debug] [2021-11-14T13:06:05.734Z] Error: Cannot find module '/Users/leochoo/dev/vocal-journal/functions/package.json'
+Require stack:
+- /Users/leochoo/.nvm/versions/node/v14.17.1/lib/node_modules/firebase-tools/lib/emulator/functionsEmulator.js
+- /Users/leochoo/.nvm/versions/node/v14.17.1/lib/node_modules/firebase-tools/lib/emulator/controller.js
+- /Users/leochoo/.nvm/versions/node/v14.17.1/lib/node_modules/firebase-tools/lib/emulator/commandUtils.js
+- /Users/leochoo/.nvm/versions/node/v14.17.1/lib/node_modules/firebase-tools/lib/commands/database-get.js
+- /Users/leochoo/.nvm/versions/node/v14.17.1/lib/node_modules/firebase-tools/lib/commands/index.js
+- /Users/leochoo/.nvm/versions/node/v14.17.1/lib/node_modules/firebase-tools/lib/index.js
+- /Users/leochoo/.nvm/versions/node/v14.17.1/lib/node_modules/firebase-tools/lib/bin/firebase.js
+    at Function.Module._resolveFilename (internal/modules/cjs/loader.js:902:15)
+    at Function.Module._load (internal/modules/cjs/loader.js:746:27)
+    at Module.require (internal/modules/cjs/loader.js:974:19)
+    at require (internal/modules/cjs/helpers.js:92:18)
+    at FunctionsEmulator.askInstallNodeVersion (/Users/leochoo/.nvm/versions/node/v14.17.1/lib/node_modules/firebase-tools/lib/emulator/functionsEmulator.js:466:21)
+    at FunctionsEmulator.start (/Users/leochoo/.nvm/versions/node/v14.17.1/lib/node_modules/firebase-tools/lib/emulator/functionsEmulator.js:178:32)
+    at Function.start (/Users/leochoo/.nvm/versions/node/v14.17.1/lib/node_modules/firebase-tools/lib/emulator/registry.js:16:24)
+    at startEmulator (/Users/leochoo/.nvm/versions/node/v14.17.1/lib/node_modules/firebase-tools/lib/emulator/controller.js:90:39)
+    at Object.startAll (/Users/leochoo/.nvm/versions/node/v14.17.1/lib/node_modules/firebase-tools/lib/emulator/controller.js:273:15)
+    at processTicksAndRejections (internal/process/task_queues.js:95:5)
+    at async Command.actionFn (/Users/leochoo/.nvm/versions/node/v14.17.1/lib/node_modules/firebase-tools/lib/commands/emulators-start.js:26:9)
+[error] 
+[error] Error: An unexpected error has occurred.
+[debug] [2021-11-14T13:12:12.020Z] ----------------------------------------------------------------------
+[debug] [2021-11-14T13:12:12.021Z] Command:       /Users/leochoo/.nvm/versions/node/v14.17.1/bin/node /Users/leochoo/.nvm/versions/node/v14.17.1/bin/firebase emulators:start
+[debug] [2021-11-14T13:12:12.021Z] CLI Version:   9.22.0
+[debug] [2021-11-14T13:12:12.021Z] Platform:      darwin
+[debug] [2021-11-14T13:12:12.021Z] Node Version:  v14.17.1
+[debug] [2021-11-14T13:12:12.022Z] Time:          Sun Nov 14 2021 22:12:12 GMT+0900 (Japan Standard Time)
+[debug] [2021-11-14T13:12:12.022Z] ----------------------------------------------------------------------
+[debug] 
+[debug] [2021-11-14T13:12:12.073Z] > command requires scopes: ["email","openid","https://www.googleapis.com/auth/cloudplatformprojects.readonly","https://www.googleapis.com/auth/firebase","https://www.googleapis.com/auth/cloud-platform"]
+[debug] [2021-11-14T13:12:12.073Z] > authorizing via signed-in user (leochoodev@gmail.com)
+[info] i  emulators: Starting emulators: functions, hosting {"metadata":{"emulator":{"name":"hub"},"message":"Starting emulators: functions, hosting"}}
+[debug] [2021-11-14T13:12:12.090Z] [hub] writing locator at /var/folders/kf/40l927h96p76kx75pv7j1gvm0000gn/T/hub-vocal-journal.json
+[warn] ⚠  functions: The following emulators are not running, calls to these services from the Functions emulator will affect production: auth, firestore, database, pubsub, storage {"metadata":{"emulator":{"name":"functions"},"message":"The following emulators are not running, calls to these services from the Functions emulator will affect production: \u001b[1mauth, firestore, database, pubsub, storage\u001b[22m"}}
+[info] i  emulators: Shutting down emulators. {"metadata":{"emulator":{"name":"hub"},"message":"Shutting down emulators."}}
+[info] i  functions: Stopping Functions Emulator {"metadata":{"emulator":{"name":"functions"},"message":"Stopping Functions Emulator"}}
+[info] i  hub: Stopping emulator hub {"metadata":{"emulator":{"name":"hub"},"message":"Stopping emulator hub"}}
+[debug] [2021-11-14T13:12:12.231Z] Error: Cannot find module '/Users/leochoo/dev/vocal-journal/functions/package.json'
+Require stack:
+- /Users/leochoo/.nvm/versions/node/v14.17.1/lib/node_modules/firebase-tools/lib/emulator/functionsEmulator.js
+- /Users/leochoo/.nvm/versions/node/v14.17.1/lib/node_modules/firebase-tools/lib/emulator/controller.js
+- /Users/leochoo/.nvm/versions/node/v14.17.1/lib/node_modules/firebase-tools/lib/emulator/commandUtils.js
+- /Users/leochoo/.nvm/versions/node/v14.17.1/lib/node_modules/firebase-tools/lib/commands/database-get.js
+- /Users/leochoo/.nvm/versions/node/v14.17.1/lib/node_modules/firebase-tools/lib/commands/index.js
+- /Users/leochoo/.nvm/versions/node/v14.17.1/lib/node_modules/firebase-tools/lib/index.js
+- /Users/leochoo/.nvm/versions/node/v14.17.1/lib/node_modules/firebase-tools/lib/bin/firebase.js
+    at Function.Module._resolveFilename (internal/modules/cjs/loader.js:902:15)
+    at Function.Module._load (internal/modules/cjs/loader.js:746:27)
+    at Module.require (internal/modules/cjs/loader.js:974:19)
+    at require (internal/modules/cjs/helpers.js:92:18)
+    at FunctionsEmulator.askInstallNodeVersion (/Users/leochoo/.nvm/versions/node/v14.17.1/lib/node_modules/firebase-tools/lib/emulator/functionsEmulator.js:466:21)
+    at FunctionsEmulator.start (/Users/leochoo/.nvm/versions/node/v14.17.1/lib/node_modules/firebase-tools/lib/emulator/functionsEmulator.js:178:32)
+    at Function.start (/Users/leochoo/.nvm/versions/node/v14.17.1/lib/node_modules/firebase-tools/lib/emulator/registry.js:16:24)
+    at startEmulator (/Users/leochoo/.nvm/versions/node/v14.17.1/lib/node_modules/firebase-tools/lib/emulator/controller.js:90:39)
+    at Object.startAll (/Users/leochoo/.nvm/versions/node/v14.17.1/lib/node_modules/firebase-tools/lib/emulator/controller.js:273:15)
+    at processTicksAndRejections (internal/process/task_queues.js:95:5)
+    at async Command.actionFn (/Users/leochoo/.nvm/versions/node/v14.17.1/lib/node_modules/firebase-tools/lib/commands/emulators-start.js:26:9)
+[error] 
+[error] Error: An unexpected error has occurred.

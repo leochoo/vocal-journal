@@ -48,7 +48,10 @@
   async function upload() {
     if (newAudio) {
       const storageRef = ref(storage, Date.now().toString());
-      const uploadTask = uploadBytesResumable(storageRef, newAudio);
+      const metadata = {
+        contentType: "audio/wav",
+      };
+      const uploadTask = uploadBytesResumable(storageRef, newAudio, metadata);
       // 'file' comes from the Blob or File API
       // uploadBytes(storageRef, newAudio).then((snapshot) => {
       //   console.log("Uploaded a blob or file!");

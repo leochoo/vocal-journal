@@ -1,9 +1,11 @@
 node_modules
+
 .DS_Store
 dist
 dist-ssr
 *.local
-
+.env
+.key
 # Created by https://www.toptal.com/developers/gitignore/api/firebase
 # Edit at https://www.toptal.com/developers/gitignore?templates=firebase
 
@@ -18,3 +20,6 @@ firebase.js
 .firebase/
 
 # End of https://www.toptal.com/developers/gitignore/api/firebase
+
+
+__pycache__/
