@@ -1,6 +1,6 @@
 <script>
   // import Recorder from "./opus-recorder/recorder";
-  // import Recorder from "opus-recorder";
+  import Recorder from "opus-recorder";
 
   // import encoderPath from "opus-recorder/dist/encoderWorker.min.js";
 
@@ -40,10 +40,10 @@
     });
 
     recorder.addEventListener("stop", () => {
-      newAudio = new Blob(recordedChunks, { type: "audio/wav" });
+      newAudio = new Blob(recordedChunks);
       console.log(newAudio);
-      // newWav = new Blob(recordedChunks, { type: "audio/wav" });
-      // console.log(newWav);
+      newWav = new Blob(recordedChunks, { type: "audio/wav" });
+      console.log(newWav);
     });
 
     recorder.start();
@@ -129,30 +129,97 @@
     console.log("data: ", data);
   }
 
-  // let monitorGain = 0;
-  // let recordingGain = 1;
-  // let numberOfChannels = 1;
-  // let bitDepth = 16;
+  let monitorGain = 0;
+  let recordingGain = 1;
+  let numberOfChannels = 1;
+  let bitDepth = 16;
 
-  // var rec = new Recorder({
-  //   monitorGain: monitorGain,
-  //   recordingGain: recordingGain,
-  //   numberOfChannels: numberOfChannels,
-  //   wavBitDepth: bitDepth,
-  //   encoderPath: "public/opus-recorder/encoderWorker.js",
-  // });
+  let opusRecorder = null;
+  let opusWavBlob = null;
 
-  // function recordOpus() {
-  //   rec.start();
-  //   console.log("recordOpus started");
-  //   console.log(rec);
-  // }
+  let opusWavURL = "";
 
-  // function stopOpus() {
-  //   rec.stop();
-  //   console.log("recordOpus stopped");
-  //   console.log(rec);
-  // }
+  function recordOpus() {
+    opusRecorder = new Recorder({
+      monitorGain: monitorGain,
+      recordingGain: recordingGain,
+      numberOfChannels: numberOfChannels,
+      wavBitDepth: bitDepth,
+      encoderPath: "public/opus-recorder/encoderWorker.js",
+    });
+
+    opusRecorder.start();
+
+    opusRecorder.onstart = () => {
+      console.log("recordOpus started");
+    };
+
+    opusRecorder.ondataavailable = function (typedArray) {
+      var dataBlob = new Blob([typedArray], { type: "audio/wav" });
+      var fileName = new Date().toISOString() + ".wav";
+      var url = URL.createObjectURL(dataBlob);
+      console.log("recordOpus ondataavailable", url);
+      opusWavURL = url;
+      opusWavBlob = dataBlob;
+    };
+
+    console.log(opusRecorder);
+  }
+
+  function stopOpus() {
+    opusRecorder.stop();
+    console.log("recordOpus stopped");
+    console.log(opusRecorder);
+  }
+  async function upload2() {
+    if (opusWavBlob) {
+      const storageRef = ref(storage, "audio_" + Date.now().toString());
+      const metadata = {
+        contentType: "audio/wav",
+      };
+      const uploadTask = uploadBytesResumable(storageRef, newAudio, metadata);
+      // 'file' comes from the Blob or File API
+      // uploadBytes(storageRef, newAudio).then((snapshot) => {
+      //   console.log("Uploaded a blob or file!");
+      //   uploadStatus = "Uploaded the audio!";
+      // });
+
+      // Register three observers:
+      // 1. 'state_changed' observer, called any time the state changes
+      // 2. Error observer, called on failure
+      // 3. Completion observer, called on successful completion
+      uploadTask.on(
+        "state_changed",
+        (snapshot) => {
+          // Observe state change events such as progress, pause, and resume
+          // Get task progress, including the number of bytes uploaded and the total number of bytes to be uploaded
+          const progress =
+            (snapshot.bytesTransferred / snapshot.totalBytes) * 100;
+          console.log("Upload is " + progress + "% done");
+          switch (snapshot.state) {
+            case "paused":
+              console.log("Upload is paused");
+              break;
+            case "running":
+              console.log("Upload is running");
+              break;
+          }
+        },
+        (error) => {
+          // Handle unsuccessful uploads
+        },
+        () => {
+          // Handle successful uploads on complete
+          // For instance, get the download URL: https://firebasestorage.googleapis.com/...
+          getDownloadURL(uploadTask.snapshot.ref).then((downloadURL) => {
+            console.log("File available at", downloadURL);
+            // upload to audios collection in firestore
+            saveURL(downloadURL);
+          });
+        }
+      );
+    }
+  }
 </script>
 
 <main>
@@ -171,9 +238,8 @@
 
   {#if newAudio}
     <audio controls src={URL.createObjectURL(newAudio)} />
+    <button type="text" on:click={() => upload()}>Send</button>
   {/if}
-
-  <button type="text" on:click={() => upload()}>Send</button>
 
   <div>{uploadStatus}</div>
 
@@ -182,8 +248,13 @@
   >
   <hr />
 
-  <!-- <h5>Record Audio with Opus Recorder</h5>
+  <h5>Record Audio with Opus Recorder</h5>
   <button type="text" on:click={() => recordOpus()}>Record</button>
-  <button type="text" on:click={() => stopOpus()}>Stop</button> -->
+  <button type="text" on:click={() => stopOpus()}>Stop</button>
+  <audio controls src={opusWavURL} />
+  {#if opusWavBlob}
+    <button type="text" on:click={() => upload2()}>Send</button>
+  {/if}
+
   <!-- <button type="text" on:click={() => playOpus()}>Play</button> -->
 </main>
