@@ -33,7 +33,7 @@
     });
 
     recorder.addEventListener("stop", () => {
-      newAudio = new Blob(recordedChunks, { type: "audio/wav; codecs=0" });
+      newAudio = new Blob(recordedChunks, { type: "audio/wav" });
       console.log(newAudio);
     });
 
