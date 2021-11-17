@@ -1,4 +1,9 @@
 <script>
+  // import Recorder from "./opus-recorder/recorder";
+  import Recorder from "opus-recorder";
+
+  // import encoderPath from "opus-recorder/dist/encoderWorker.min.js";
+
   import { storage, db } from "../firebase.js";
   import {
     ref,
@@ -11,11 +16,13 @@
   let loading = false;
   let newAudio = null;
   let recorder = null;
+  let newWav = null;
 
   let uploadStatus = "";
 
   async function record() {
     newAudio = null;
+    newWav = null;
 
     const stream = await navigator.mediaDevices.getUserMedia({
       audio: true,
@@ -35,19 +42,26 @@
     recorder.addEventListener("stop", () => {
       newAudio = new Blob(recordedChunks);
       console.log(newAudio);
+      newWav = new Blob(recordedChunks, { type: "audio/wav" });
+      console.log(newWav);
     });
 
     recorder.start();
   }
+
   async function stop() {
     recorder.stop();
     recorder = null;
   }
 
+  function createDownloadLink(blob) {
+    console.log(blob);
+  }
+
   // upload audio to Firebase storage and get download url
   async function upload() {
     if (newAudio) {
-      const storageRef = ref(storage, Date.now().toString());
+      const storageRef = ref(storage, "audio_" + Date.now().toString());
       const metadata = {
         contentType: "audio/wav",
       };
@@ -114,6 +128,31 @@
     // const data = await response.body.values;
     console.log("data: ", data);
   }
+
+  let monitorGain = 0;
+  let recordingGain = 1;
+  let numberOfChannels = 1;
+  let bitDepth = 16;
+
+  var rec = new Recorder({
+    monitorGain: monitorGain,
+    recordingGain: recordingGain,
+    numberOfChannels: numberOfChannels,
+    wavBitDepth: bitDepth,
+    encoderPath: "public/opus-recorder/encoderWorker.js",
+  });
+
+  function recordOpus() {
+    rec.start();
+    console.log("recordOpus started");
+    console.log(rec);
+  }
+
+  function stopOpus() {
+    rec.stop();
+    console.log("recordOpus stopped");
+    console.log(rec);
+  }
 </script>
 
 <main>
@@ -134,8 +173,6 @@
     <audio controls src={URL.createObjectURL(newAudio)} />
   {/if}
 
-  <hr />
-
   <button type="text" on:click={() => upload()}>Send</button>
 
   <div>{uploadStatus}</div>
@@ -143,4 +180,10 @@
   <button type="text" on:click={() => testTriggerCloudFunction()}
     >Test Trigger</button
   >
+  <hr />
+
+  <h5>Record Audio with Opus Recorder</h5>
+  <button type="text" on:click={() => recordOpus()}>Record</button>
+  <button type="text" on:click={() => stopOpus()}>Stop</button>
+  <!-- <button type="text" on:click={() => playOpus()}>Play</button> -->
 </main>
