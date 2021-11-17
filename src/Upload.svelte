@@ -1,6 +1,6 @@
 <script>
   // import Recorder from "./opus-recorder/recorder";
-  import Recorder from "opus-recorder";
+  // import Recorder from "opus-recorder";
 
   // import encoderPath from "opus-recorder/dist/encoderWorker.min.js";
 
@@ -40,10 +40,10 @@
     });
 
     recorder.addEventListener("stop", () => {
-      newAudio = new Blob(recordedChunks);
+      newAudio = new Blob(recordedChunks, { type: "audio/wav" });
       console.log(newAudio);
-      newWav = new Blob(recordedChunks, { type: "audio/wav" });
-      console.log(newWav);
+      // newWav = new Blob(recordedChunks, { type: "audio/wav" });
+      // console.log(newWav);
     });
 
     recorder.start();
@@ -129,30 +129,30 @@
     console.log("data: ", data);
   }
 
-  let monitorGain = 0;
-  let recordingGain = 1;
-  let numberOfChannels = 1;
-  let bitDepth = 16;
+  // let monitorGain = 0;
+  // let recordingGain = 1;
+  // let numberOfChannels = 1;
+  // let bitDepth = 16;
 
-  var rec = new Recorder({
-    monitorGain: monitorGain,
-    recordingGain: recordingGain,
-    numberOfChannels: numberOfChannels,
-    wavBitDepth: bitDepth,
-    encoderPath: "public/opus-recorder/encoderWorker.js",
-  });
+  // var rec = new Recorder({
+  //   monitorGain: monitorGain,
+  //   recordingGain: recordingGain,
+  //   numberOfChannels: numberOfChannels,
+  //   wavBitDepth: bitDepth,
+  //   encoderPath: "public/opus-recorder/encoderWorker.js",
+  // });
 
-  function recordOpus() {
-    rec.start();
-    console.log("recordOpus started");
-    console.log(rec);
-  }
+  // function recordOpus() {
+  //   rec.start();
+  //   console.log("recordOpus started");
+  //   console.log(rec);
+  // }
 
-  function stopOpus() {
-    rec.stop();
-    console.log("recordOpus stopped");
-    console.log(rec);
-  }
+  // function stopOpus() {
+  //   rec.stop();
+  //   console.log("recordOpus stopped");
+  //   console.log(rec);
+  // }
 </script>
 
 <main>
@@ -182,8 +182,8 @@
   >
   <hr />
 
-  <h5>Record Audio with Opus Recorder</h5>
+  <!-- <h5>Record Audio with Opus Recorder</h5>
   <button type="text" on:click={() => recordOpus()}>Record</button>
-  <button type="text" on:click={() => stopOpus()}>Stop</button>
+  <button type="text" on:click={() => stopOpus()}>Stop</button> -->
   <!-- <button type="text" on:click={() => playOpus()}>Play</button> -->
 </main>
