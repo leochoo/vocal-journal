@@ -1,8 +1,12 @@
+import urllib.request
+import magic
+import ffmpeg
+
 from flask import Flask, request, jsonify
 import parselmouth
 import glob
 import os.path
-import urllib.request
+
 
 app = Flask(__name__)
 
@@ -11,22 +15,19 @@ app = Flask(__name__)
 
 @app.route('/')
 def pitch_track():
-    # Download file and save
-    url = 'https://firebasestorage.googleapis.com/v0/b/vocal-journal.appspot.com/o/1636902198006?alt=media&token=d10843b2-c92e-4907-9cbc-58e06223b6f7'
-    urllib.request.urlretrieve(url, "audio/firebase.wav")
-    # Save the file that was sent, and read it into a parselmouth.Sound
-    for wave_file in glob.glob("audio/*.wav"):
-        print("Processing {}...".format(wave_file))
-        sound = parselmouth.Sound(wave_file)
-        # Calculate the pitch track with Parselmouth
-        pitch_track = sound.to_pitch().selected_array['frequency']
-        # Convert the NumPy array into a list, then encode as JSON to send back
-        return jsonify(list(pitch_track))
+    return jsonify(analyze())
 
-    # Download file from url, open sound file, and run above function
-    # url = 'https://firebasestorage.googleapis.com/v0/b/vocal-journal.appspot.com/o/1636899950097?alt=media&token=ef0643cc-aa4e-47ac-8bc3-ed6c9be750b0'
-    # response = urllib.request.urlopen(url)
-    # data = response.read()      # a `bytes` object
-    # sound = parselmouth.Sound(data)
-    # pitch_track = sound.to_pitch().selected_array['frequency']
-    # return jsonify(list(pitch_track))
+
+def analyze():
+    return_string = ""
+    url = "https://firebasestorage.googleapis.com/v0/b/vocal-journal.appspot.com/o/leo_audio_1637128699906?alt=media&token=92c37c3a-f519-453e-a21a-9d8f022c4d0c"
+    urllib.request.urlretrieve(url, "audio/input.wav")
+    print("Input: ", magic.from_file("audio/input.wav"))
+
+    stream = ffmpeg.input("audio/input.wav")
+    stream = ffmpeg.output(stream, "audio/output.wav")
+    ffmpeg.run(stream)
+    print("Output: ", magic.from_file("audio/output.wav"))
+
+    return "done"
+    # return "Input: " + magic.from_file("audio/input.wav") + "\n" + "Output: " + magic.from_file("audio/output.wav")
