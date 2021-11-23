@@ -8,7 +8,7 @@
     "serve": "vite preview",
     "check": "svelte-check --tsconfig ./tsconfig.json",
     "deploy": "npm run build && firebase deploy --only hosting:journal",
-    "gcloud-deploy": "gcloud functions deploy function-0 --region=asia-northeast1 --project=vocal-journal --entry-point=hello_world --runtime=python39 --trigger-http --source=/Users/leonardchoo/Desktop/dev_m1/research/vocal-journal/functions/function-0"
+    "gcloud-deploy-parsel": "gcloud functions deploy function-0 --region=asia-northeast1 --project=vocal-journal --entry-point=handle_request --runtime=python39 --trigger-http --source=functions/parselmouth"
   },
   "devDependencies": {
     "@sveltejs/vite-plugin-svelte": "^1.0.0-next.11",
