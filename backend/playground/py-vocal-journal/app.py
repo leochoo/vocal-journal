@@ -22,7 +22,7 @@ def get_file_path(filename):
 
 
 def analyze():
-    url = "https://firebasestorage.googleapis.com/v0/b/vocal-journal.appspot.com/o/leo_audio_1637128699906?alt=media&token=92c37c3a-f519-453e-a21a-9d8f022c4d0c"
+    url = "https://firebasestorage.googleapis.com/v0/b/vocal-journal.appspot.com/o/audio_1638349605653?alt=media&token=fa52e757-0210-4a62-b0ed-17bdcbdd215c"
 
     input_filename = "input.wav"
     input_file_path = get_file_path(input_filename)

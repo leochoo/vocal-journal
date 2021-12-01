@@ -112,8 +112,16 @@
 
   async function testTriggerCloudFunction() {
     const response = await fetch(
-      "http://asia-northeast1-vocal-journal.cloudfunctions.net/function-0"
+      "https://asia-northeast1-vocal-journal.cloudfunctions.net/parselmouth"
     );
+    // console.log(response);
+    const data = await response.json();
+    // const data = await response.body.values;
+    console.log("data: ", data);
+  }
+
+  async function testTriggerLocalFunction() {
+    const response = await fetch("http://127.0.0.1:5000/");
     // console.log(response);
     const data = await response.json();
     // const data = await response.body.values;
@@ -143,7 +151,11 @@
   <div>{uploadStatus}</div>
 
   <button type="text" on:click={() => testTriggerCloudFunction()}
-    >Test Trigger</button
-  >
+    >Trigger Test Cloud Function
+  </button>
+
+  <button type="text" on:click={() => testTriggerCloudFunction()}
+    >Trigger Test Local Function
+  </button>
   <hr />
 </main>
