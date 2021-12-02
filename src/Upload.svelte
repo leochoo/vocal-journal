@@ -154,7 +154,7 @@
     >Trigger Test Cloud Function
   </button>
 
-  <button type="text" on:click={() => testTriggerCloudFunction()}
+  <button type="text" on:click={() => testTriggerLocalFunction()}
     >Trigger Test Local Function
   </button>
   <hr />
