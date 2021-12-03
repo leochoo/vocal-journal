@@ -1,11 +1,10 @@
+from flask import Flask, request, jsonify
 import urllib.request
 import magic
 import ffmpeg
-from flask import Flask, request, jsonify
-import parselmouth
-# import glob
 import os
 import tempfile
+import parselmouth
 
 app = Flask(__name__)
 

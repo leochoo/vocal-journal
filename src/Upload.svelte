@@ -121,7 +121,7 @@
   }
 
   async function testTriggerLocalFunction() {
-    const response = await fetch("http://127.0.0.1:5000/");
+    const response = await fetch("http://127.0.0.1:5001/");
     // console.log(response);
     const data = await response.json();
     // const data = await response.body.values;
