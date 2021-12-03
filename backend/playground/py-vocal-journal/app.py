@@ -1,3 +1,6 @@
+from firebase_admin import firestore
+from firebase_admin import credentials
+import firebase_admin
 from flask import Flask, request, jsonify
 import urllib.request
 import magic
@@ -8,11 +11,18 @@ import parselmouth
 
 app = Flask(__name__)
 
-# @app.route('/pitch_track', methods=['POST'])
+
+# Use a service account
+os.environ['GOOGLE_APPLICATION_CREDENTIALS'] = '/Users/leochoo/dev/vocal-journal/.key/vocal-journal-firebase-adminsdk-oun5i-107f90e11f.json'
+cred = credentials.Certificate(
+    "/Users/leochoo/dev/vocal-journal/.key/vocal-journal-firebase-adminsdk-oun5i-107f90e11f.json")
+firebase_admin.initialize_app(cred)
+
+db = firestore.AsyncClient()
 
 
 @app.route('/')
-def handle_request():
+async def handle_request():
     # For more information about CORS and CORS preflight requests, see:
     # https://developer.mozilla.org/en-US/docs/Glossary/Preflight_request
 
@@ -52,7 +62,7 @@ def handle_request():
     elif request_json and 'message' in request_json:
         return_message = request_json['message']
     else:
-        return_message = {"data": analyze()}
+        return_message = {"data": await analyze()}
 
     return (return_message, 200, headers)
 
@@ -65,7 +75,7 @@ def get_file_path(filename):
     return os.path.join(tempfile.gettempdir(), filename)
 
 
-def analyze():
+async def analyze():
 
     # 1. Preprocessing
     # Download sound file
@@ -107,6 +117,17 @@ def analyze():
     harmonicity = parselmouth.praat.call(
         sound, "To Harmonicity (cc)", 0.01, 75, 0.1, 1.0)
     hnr = parselmouth.praat.call(harmonicity, "Get mean", 0, 0)
+
+    # jitter shimmer hnr object
+    jsh_obj = {
+        "jitter_local": jitter_local,
+        "shimmer_local": shimmer_local,
+        "HNR": hnr
+    }
+
+    # update firestore document
+    doc_ref = db.collection("analysis")
+    await doc_ref.add(jsh_obj)
 
     return jitter_local, shimmer_local, hnr
 
