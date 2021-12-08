@@ -8,9 +8,10 @@ import ffmpeg
 import os
 import tempfile
 import parselmouth
+# from flask_cors import CORS
 
 app = Flask(__name__)
-
+# CORS(app)
 
 # Use a service account
 os.environ['GOOGLE_APPLICATION_CREDENTIALS'] = '/Users/leochoo/dev/vocal-journal/.key/vocal-journal-firebase-adminsdk-oun5i-107f90e11f.json'
@@ -22,7 +23,8 @@ db = firestore.AsyncClient()
 
 
 @app.route('/')
-async def handle_request():
+def handle_request():
+    # async def handle_request():
     # For more information about CORS and CORS preflight requests, see:
     # https://developer.mozilla.org/en-US/docs/Glossary/Preflight_request
 
@@ -62,26 +64,36 @@ async def handle_request():
     elif request_json and 'message' in request_json:
         return_message = request_json['message']
     else:
-        return_message = {"data": await analyze()}
+        # return_message = {"data": await analyze(request.args.get("audioURL"))}
+        return_message = {"data": analyze()}
 
-    return (return_message, 200, headers)
+    # return (return_message, 200, headers)
+    # return await analyze(request.args.get("audioURL"))
 
 
-def pitch_track():
-    return {"data": analyze()}
+# def pitch_track():
+#     return {"data": analyze()}
 
 
 def get_file_path(filename):
     return os.path.join(tempfile.gettempdir(), filename)
 
 
-async def analyze():
+def analyze():
+    # 1. Preprocessing
+    # Download sound file
+    url = "https://firebasestorage.googleapis.com/v0/b/vocal-journal.appspot.com/o/audio_1638940367003?alt=media&token=43c1a49d-22ec-4f66-8926-2c3d210d7a90"
+    print("MY AUDIO URL: " + url)
+
+# def analyze(audioURL):
+#     print("audioURL: " + audioURL)
 
     # 1. Preprocessing
     # Download sound file
-    url = "https://firebasestorage.googleapis.com/v0/b/vocal-journal.appspot.com/o/audio_1638349605653?alt=media&token=fa52e757-0210-4a62-b0ed-17bdcbdd215c"
+    # url = audioURL
     input_name = "input.wav"
     input_path = get_file_path(input_name)
+    print("INPUT PATH: " + input_path)
     urllib.request.urlretrieve(url, input_path)
     # print("Input: ", magic.from_file(input_file_path))
 
@@ -127,7 +139,9 @@ async def analyze():
 
     # update firestore document
     doc_ref = db.collection("analysis")
-    await doc_ref.add(jsh_obj)
+    doc_ref.add(jsh_obj)
+
+    print("Jitter result:", jitter_local)
 
     return jitter_local, shimmer_local, hnr
 

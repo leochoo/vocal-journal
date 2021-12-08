@@ -105,14 +105,16 @@
       createdAt: Date.now(),
       audioURL: downloadURL,
     });
-    console.log(newAudioURL);
+    console.log("newAudioURL", newAudioURL);
     // trigger cloud function
-    testTriggerCloudFunction();
+    // testTriggerCloudFunction(downloadURL);
+    testTriggerLocalFunction(downloadURL);
   }
 
-  async function testTriggerCloudFunction() {
+  async function testTriggerCloudFunction(downloadURL) {
     const response = await fetch(
-      "https://asia-northeast1-vocal-journal.cloudfunctions.net/parselmouth"
+      "https://asia-northeast1-vocal-journal.cloudfunctions.net/parselmouth?audioURL=" +
+        downloadURL
     );
     // console.log(response);
     const data = await response.json();
@@ -120,8 +122,12 @@
     console.log("data: ", data);
   }
 
-  async function testTriggerLocalFunction() {
-    const response = await fetch("http://127.0.0.1:5001/");
+  async function testTriggerLocalFunction(downloadURL) {
+    const response = await fetch(
+      // "http://127.0.0.1:5001?audioURL=" +
+      //   "https://firebasestorage.googleapis.com/v0/b/vocal-journal.appspot.com/o/audio_1638940367003?alt=media&token=43c1a49d-22ec-4f66-8926-2c3d210d7a90"
+      "http://127.0.0.1:5001"
+    );
     // console.log(response);
     const data = await response.json();
     // const data = await response.body.values;

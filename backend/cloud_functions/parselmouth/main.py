@@ -48,7 +48,7 @@ def handle_request(request):
     elif request_json and 'message' in request_json:
         return_message = request_json['message']
     else:
-        return_message = {"data": analyze()}
+        return_message = {"data": analyze(request.args.get("audioURL"))}
 
     return (return_message, 200, headers)
 
@@ -57,11 +57,11 @@ def get_file_path(filename):
     return os.path.join(tempfile.gettempdir(), filename)
 
 
-def analyze():
+def analyze(audioURL):
 
     # 1. Preprocessing
     # Download sound file
-    url = "https://firebasestorage.googleapis.com/v0/b/vocal-journal.appspot.com/o/audio_1638349605653?alt=media&token=fa52e757-0210-4a62-b0ed-17bdcbdd215c"
+    url = audioURL
     input_name = "input.wav"
     input_path = get_file_path(input_name)
     urllib.request.urlretrieve(url, input_path)
