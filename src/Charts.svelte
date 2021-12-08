@@ -13,7 +13,6 @@
   import { db } from "../firebase.js";
 
   let audioList = [];
-
   const q = query(
     collection(db, "audio"),
     // where("owner", "==", uid),
@@ -31,48 +30,64 @@
     });
   });
 
-  export let plotHeader = "";
+  // grab analysis data from firestore
+  let analysisList = [];
+  const analysisQuery = query(collection(db, "analysis"));
+  const unsubscribe2 = onSnapshot(analysisQuery, (querySnapshot) => {
+    var _analysis = [];
+    querySnapshot.forEach((doc) => {
+      const analysisObject = {
+        id: doc.id,
+        jitter: doc.data().jitter_local,
+        shimmer: doc.data().shimmer_local,
+        hnr: doc.data().HNR,
+      };
+      _analysis = [..._analysis, analysisObject];
+      analysisList = _analysis;
+    });
+  });
 
-  export let data = [
+  let plotHeader = "Jitter";
+
+  let data = [
     {
-      x: ["giraffes", "orangutans", "monkeys"],
-      y: [20, 14, 23],
+      x: ["user1", "user2", "user3"],
+      y: [0.1, 0.2, 0.3],
       type: "bar",
     },
   ];
 
   onMount(() => {
     let plotDiv = document.getElementById("plotDiv");
-    let Plot = new Plotly.newPlot(plotDiv, data, {}, { showSendToCloud: true });
-
-    var TESTER = document.getElementById("tester");
-    Plotly.newPlot(
-      TESTER,
-      [
-        {
-          x: [1, 2, 3, 4, 5],
-          y: [1, 2, 4, 8, 16],
-        },
-      ],
-      {
-        margin: { t: 0 },
-      }
-    );
+    Plotly.newPlot(plotDiv, data, {}, { showSendToCloud: true });
   });
 </script>
 
 <main>
   <h1>Charts</h1>
+  <p>Audio file list</p>
   <ul>
     {#each audioList as audio}
       <li>{audio.audioURL}</li>
     {/each}
   </ul>
-  <div id="tester" style="width:600px;height:250px;" />
-  <div id="plotly">
-    <div>
-      <h1>{plotHeader}</h1>
+  <p>Analysis data</p>
+  <ul>
+    {#each analysisList as analysis}
+      <li>User: {analysis.id}</li>
+      <ul>
+        <li>Jitter: {analysis.jitter}</li>
+        <li>Shimmer: {analysis.shimmer}</li>
+        <li>HNR: {analysis.hnr}</li>
+      </ul>
+    {/each}
+
+    <p>Graphs</p>
+    <div id="plotly">
+      <div>
+        <h1>{plotHeader}</h1>
+      </div>
+      <div id="plotDiv" />
     </div>
-    <div id="plotDiv"><!-- Plotly chart will be drawn inside this DIV --></div>
-  </div>
+  </ul>
 </main>
