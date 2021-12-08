@@ -65,9 +65,11 @@ def handle_request():
         return_message = request_json['message']
     else:
         # return_message = {"data": await analyze(request.args.get("audioURL"))}
+        result = analyze()
+        print("Analysis result", result)
         return_message = {"data": analyze()}
 
-    # return (return_message, 200, headers)
+    return (return_message, 200, headers)
     # return await analyze(request.args.get("audioURL"))
 
 
@@ -143,7 +145,7 @@ def analyze():
 
     print("Jitter result:", jitter_local)
 
-    return jitter_local, shimmer_local, hnr
+    return jsh_obj
 
 
 # Process wav files to get Jitter, Shimmer, HNR, and MFCC
