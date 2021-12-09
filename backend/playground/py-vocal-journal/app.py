@@ -19,11 +19,11 @@ cred = credentials.Certificate(
     "/Users/leochoo/dev/vocal-journal/.key/vocal-journal-firebase-adminsdk-oun5i-107f90e11f.json")
 firebase_admin.initialize_app(cred)
 
-db = firestore.client()
+db = firestore.AsyncClient()
 
 
 @app.route('/')
-def handle_request():
+async def handle_request():
     # async def handle_request():
     # For more information about CORS and CORS preflight requests, see:
     # https://developer.mozilla.org/en-US/docs/Glossary/Preflight_request
@@ -68,7 +68,7 @@ def handle_request():
         audioURL = request.args.get("audioURL")
         token = request.args.get("token")
         finalURL = audioURL+"&token="+token
-        result = analyze(finalURL)
+        result = await analyze(finalURL)
         print("Analysis result", result)
         return_message = {"data": result}
 
@@ -79,7 +79,7 @@ def get_file_path(filename):
     return os.path.join(tempfile.gettempdir(), filename)
 
 
-def analyze(audioURL):
+async def analyze(audioURL):
     # 1. Preprocessing
     # Download sound file
     input_name = "input.wav"
@@ -127,9 +127,9 @@ def analyze(audioURL):
     }
 
     # update firestore document
-    doc_ref = db.collection(u'analysis')
+    doc_ref = db.collection('analysis')
     print("doc_ref", doc_ref)
-    doc_ref.add(jsh_obj)
+    await doc_ref.add(jsh_obj)
 
     print("Jitter result:", jitter_local)
 
