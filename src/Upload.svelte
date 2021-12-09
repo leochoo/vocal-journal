@@ -107,7 +107,7 @@
     });
     console.log("newAudioURL", newAudioURL);
     // trigger cloud function
-    // testTriggerCloudFunction(downloadURL);
+    testTriggerCloudFunction(downloadURL);
     testTriggerLocalFunction(downloadURL);
   }
 
@@ -126,8 +126,6 @@
     console.log("downloadURL", downloadURL);
     const response = await fetch(
       "http://127.0.0.1:5001?audioURL=" + downloadURL
-      // "https://firebasestorage.googleapis.com/v0/b/vocal-journal.appspot.com/o/audio_1639029743708?alt=media&token=4e6c1944-5bcb-4963-bbcc-445cb7eec76e"
-      // "http://127.0.0.1:5001"
     );
     // console.log(response);
     const data = await response.json();

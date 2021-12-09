@@ -1,3 +1,6 @@
+from firebase_admin import firestore
+from firebase_admin import credentials
+import firebase_admin
 import urllib.request
 import magic
 import ffmpeg
@@ -6,10 +9,18 @@ import tempfile
 import parselmouth
 
 
-# magic.from_file("audio/sample.wav")
+# Use a service account
+print("Current direcotry path: ", os.getcwd())
+os.environ['GOOGLE_APPLICATION_CREDENTIALS'] = ".key/vocal-journal-firebase-adminsdk-oun5i-107f90e11f.json"
+cred = credentials.Certificate(
+    ".key/vocal-journal-firebase-adminsdk-oun5i-107f90e11f.json")
+firebase_admin.initialize_app(cred)
+
+db = firestore.AsyncClient()
 
 
 def handle_request(request):
+    # async def handle_request():
     # For more information about CORS and CORS preflight requests, see:
     # https://developer.mozilla.org/en-US/docs/Glossary/Preflight_request
 
@@ -32,7 +43,8 @@ def handle_request(request):
     Returns:
         The response text or any set of values that can be turned into a
         Response object using
-        `make_response <http://flask.pocoo.org/docs/1.0/api/#flask.Flask.make_response>`.
+        # flask.Flask.make_response>`.
+        `make_response <http://flask.pocoo.org/docs/1.0/api/
     """
 
     # Set CORS headers for the main request
@@ -48,7 +60,13 @@ def handle_request(request):
     elif request_json and 'message' in request_json:
         return_message = request_json['message']
     else:
-        return_message = {"data": analyze(request.args.get("audioURL"))}
+        # parse request parameters
+        audioURL = request.args.get("audioURL")
+        token = request.args.get("token")
+        finalURL = audioURL+"&token="+token
+        result = analyze(finalURL)
+        print("Analysis result", result)
+        return_message = {"data": result}
 
     return (return_message, 200, headers)
 
@@ -58,14 +76,11 @@ def get_file_path(filename):
 
 
 def analyze(audioURL):
-
     # 1. Preprocessing
     # Download sound file
-    url = audioURL
     input_name = "input.wav"
     input_path = get_file_path(input_name)
-    urllib.request.urlretrieve(url, input_path)
-    # print("Input: ", magic.from_file(input_file_path))
+    urllib.request.urlretrieve(audioURL, input_path)
 
     # Save sound file to a temporary directory
     output_name = "output.wav"
@@ -100,4 +115,17 @@ def analyze(audioURL):
         sound, "To Harmonicity (cc)", 0.01, 75, 0.1, 1.0)
     hnr = parselmouth.praat.call(harmonicity, "Get mean", 0, 0)
 
-    return jitter_local, shimmer_local, hnr
+    # jitter shimmer hnr object
+    jsh_obj = {
+        "jitter_local": jitter_local,
+        "shimmer_local": shimmer_local,
+        "HNR": hnr
+    }
+
+    # update firestore document
+    doc_ref = db.collection("analysis")
+    doc_ref.add(jsh_obj)
+
+    print("Jitter result:", jitter_local)
+
+    return jsh_obj

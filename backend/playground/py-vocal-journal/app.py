@@ -64,11 +64,9 @@ def handle_request():
     elif request_json and 'message' in request_json:
         return_message = request_json['message']
     else:
-        # return_message = {"data": await analyze(request.args.get("audioURL"))}
+        # parse request parameters
         audioURL = request.args.get("audioURL")
-        # print("request.args.get audioURL", audioURL)
         token = request.args.get("token")
-        # print("request.args.get token", token)
         finalURL = audioURL+"&token="+token
         result = analyze(finalURL)
         print("Analysis result", result)
@@ -77,30 +75,16 @@ def handle_request():
     return (return_message, 200, headers)
 
 
-# def pitch_track():
-#     return {"data": analyze()}
-
-
 def get_file_path(filename):
     return os.path.join(tempfile.gettempdir(), filename)
 
 
 def analyze(audioURL):
-    print("audioURL: " + audioURL)
-
     # 1. Preprocessing
-
-    # TEST
-    # url = "https://firebasestorage.googleapis.com/v0/b/vocal-journal.appspot.com/o/audio_1638940367003?alt=media&token=43c1a49d-22ec-4f66-8926-2c3d210d7a90"
-    # print("MY AUDIO URL: " + url)
-
     # Download sound file
-    # url = audioURL
     input_name = "input.wav"
     input_path = get_file_path(input_name)
-    print("INPUT PATH: " + input_path)
     urllib.request.urlretrieve(audioURL, input_path)
-    # print("Input: ", magic.from_file(input_file_path))
 
     # Save sound file to a temporary directory
     output_name = "output.wav"
