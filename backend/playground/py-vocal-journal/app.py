@@ -65,12 +65,16 @@ def handle_request():
         return_message = request_json['message']
     else:
         # return_message = {"data": await analyze(request.args.get("audioURL"))}
-        result = analyze()
+        audioURL = request.args.get("audioURL")
+        # print("request.args.get audioURL", audioURL)
+        token = request.args.get("token")
+        # print("request.args.get token", token)
+        finalURL = audioURL+"&token="+token
+        result = analyze(finalURL)
         print("Analysis result", result)
-        return_message = {"data": analyze()}
+        return_message = {"data": result}
 
     return (return_message, 200, headers)
-    # return await analyze(request.args.get("audioURL"))
 
 
 # def pitch_track():
@@ -81,22 +85,21 @@ def get_file_path(filename):
     return os.path.join(tempfile.gettempdir(), filename)
 
 
-def analyze():
-    # 1. Preprocessing
-    # Download sound file
-    url = "https://firebasestorage.googleapis.com/v0/b/vocal-journal.appspot.com/o/audio_1638940367003?alt=media&token=43c1a49d-22ec-4f66-8926-2c3d210d7a90"
-    print("MY AUDIO URL: " + url)
-
-# def analyze(audioURL):
-#     print("audioURL: " + audioURL)
+def analyze(audioURL):
+    print("audioURL: " + audioURL)
 
     # 1. Preprocessing
+
+    # TEST
+    # url = "https://firebasestorage.googleapis.com/v0/b/vocal-journal.appspot.com/o/audio_1638940367003?alt=media&token=43c1a49d-22ec-4f66-8926-2c3d210d7a90"
+    # print("MY AUDIO URL: " + url)
+
     # Download sound file
     # url = audioURL
     input_name = "input.wav"
     input_path = get_file_path(input_name)
     print("INPUT PATH: " + input_path)
-    urllib.request.urlretrieve(url, input_path)
+    urllib.request.urlretrieve(audioURL, input_path)
     # print("Input: ", magic.from_file(input_file_path))
 
     # Save sound file to a temporary directory
@@ -146,67 +149,3 @@ def analyze():
     print("Jitter result:", jitter_local)
 
     return jsh_obj
-
-
-# Process wav files to get Jitter, Shimmer, HNR, and MFCC
-
-# def get_voice_data(_path):
-#     # select .wav files only
-#     wav_files = glob.glob(_path + "/*.wav")
-
-#     n_list = []
-#     tone_list = []
-#     syllab_list = []
-
-#     j_list = []
-#     s_list = []
-#     h_list = []
-
-# for wav_file in wav_files:
-# for wav_file in tqdm(wav_files): # tqdm shows the progress bar
-#     sound = parselmouth.Sound(wav_file) # sound object from wav file
-#     pitch = sound.to_pitch()
-#     pulses = parselmouth.praat.call([sound, pitch], "To PointProcess (cc)")
-
-#     # name analysis
-#     name = os.path.basename(wav_file).split(".")[0]
-
-#     ## tone
-#     if "l" in name:
-#         tone_list.append("l")
-#     elif "n" in name:
-#         tone_list.append("n")
-#     elif "h" in name:
-#         tone_list.append("h")
-
-#     ## syllable
-#     if "a" in name:
-#         syllab_list.append("a")
-#     elif "i" in name:
-#         syllab_list.append("i")
-#     elif "u" in name:
-#         syllab_list.append("u")
-
-#     # jitter
-#     jitter_local = parselmouth.praat.call(pulses, "Get jitter (local)", 0.0, 0.0, 0.0001, 0.02, 1.3) * 100
-
-#     # shimmer
-#     shimmer_local = parselmouth.praat.call([sound, pulses], "Get shimmer (local)", 0, 0, 0.0001, 0.02, 1.3, 1.6)
-
-#     # HNR
-#     harmonicity = parselmouth.praat.call(sound, "To Harmonicity (cc)", 0.01, 75, 0.1, 1.0)
-#     hnr = parselmouth.praat.call(harmonicity, "Get mean", 0, 0)
-
-#     # Append to numpy array
-#     n_list.append(name)
-#     j_list.append(jitter_local)
-#     s_list.append(shimmer_local)
-#     h_list.append(hnr)
-
-#     # MFCC
-#     mfcc_object = sound.to_mfcc(number_of_coefficients=12)
-#     mfcc_arr = mfcc_object.to_array()
-#     mfcc_dic = {}
-#     for i in range(0,len(mfcc_arr)):
-#         mfcc_dic["MFCC-"+str(i)] = [statistics.mean(mfcc_arr[i])]
-#     mfcc_df = pd.DataFrame.from_dict(mfcc_dic)
