@@ -1,4 +1,5 @@
 <script>
+  import JshPlot from "./components/JshPlot.svelte";
   import Plotly from "plotly.js-dist";
   import { onMount } from "svelte";
   import {
@@ -43,23 +44,48 @@
         hnr: doc.data().HNR,
       };
       _analysis = [..._analysis, analysisObject];
+      console.log("_analysis", _analysis);
       analysisList = _analysis;
     });
+    updatePlot();
   });
 
-  let plotHeader = "Jitter";
+  function updatePlot() {
+    console.log("updatePlot");
+    // extract jsh into arrays
+    let idList = [];
+    let jitterList = [];
+    let shimmerList = [];
+    let hnrList = [];
 
-  let data = [
-    {
-      x: ["user1", "user2", "user3"],
-      y: [0.1, 0.2, 0.3],
-      type: "bar",
-    },
-  ];
+    analysisList.forEach((analysis) => {
+      idList = [...idList, analysis.id];
+      jitterList = [...jitterList, analysis.jitter];
+      shimmerList = [...shimmerList, analysis.shimmer];
+      hnrList = [...hnrList, analysis.hnr];
+    });
 
-  onMount(() => {
+    let data = [
+      {
+        x: idList,
+        y: jitterList,
+        type: "bar",
+      },
+    ];
+
     let plotDiv = document.getElementById("plotDiv");
     Plotly.newPlot(plotDiv, data, {}, { showSendToCloud: true });
+  }
+
+  let plotHeader = "PlotHeader";
+
+  // $: {
+
+  //   Plotly.newPlot(plotDiv, data, {}, { showSendToCloud: true });
+  // }
+
+  onMount(() => {
+    console.log("onMount render");
   });
 </script>
 
@@ -82,12 +108,14 @@
       </ul>
     {/each}
 
-    <p>Graphs</p>
+    <h1>Graphs</h1>
     <div id="plotly">
       <div>
-        <h1>{plotHeader}</h1>
+        <h3>{plotHeader}</h3>
       </div>
       <div id="plotDiv" />
+      <!-- <div bind:this={plotDiv} /> -->
+      <!-- <JshPlot data={analysisList} /> -->
     </div>
   </ul>
 </main>

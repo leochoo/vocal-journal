@@ -107,11 +107,10 @@
     });
     console.log("newAudioURL", newAudioURL);
     // trigger cloud function
-    testTriggerCloudFunction(downloadURL);
-    testTriggerLocalFunction(downloadURL);
+    triggerCloudFunction(downloadURL);
   }
 
-  async function testTriggerCloudFunction(downloadURL) {
+  async function triggerCloudFunction(downloadURL) {
     const response = await fetch(
       "https://asia-northeast1-vocal-journal.cloudfunctions.net/parselmouth?audioURL=" +
         downloadURL
@@ -122,7 +121,7 @@
     console.log("data: ", data);
   }
 
-  async function testTriggerLocalFunction(downloadURL) {
+  async function triggerLocalFunction(downloadURL) {
     console.log("downloadURL", downloadURL);
     const response = await fetch(
       "http://127.0.0.1:5001?audioURL=" + downloadURL
@@ -155,12 +154,5 @@
 
   <div>{uploadStatus}</div>
 
-  <button type="text" on:click={() => testTriggerCloudFunction()}
-    >Trigger Test Cloud Function
-  </button>
-
-  <button type="text" on:click={() => testTriggerLocalFunction()}
-    >Trigger Test Local Function
-  </button>
   <hr />
 </main>

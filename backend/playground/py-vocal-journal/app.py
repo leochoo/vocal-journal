@@ -67,6 +67,8 @@ def handle_request():
         # parse request parameters
         audioURL = request.args.get("audioURL")
         token = request.args.get("token")
+        print("audioURL:", audioURL)
+        print("token:", token)
         finalURL = audioURL+"&token="+token
         result = analyze(finalURL)
         print("Analysis result", result)
