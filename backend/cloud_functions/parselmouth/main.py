@@ -16,7 +16,7 @@ cred = credentials.Certificate(
     ".key/vocal-journal-firebase-adminsdk-oun5i-107f90e11f.json")
 firebase_admin.initialize_app(cred)
 
-db = firestore.AsyncClient()
+db = firestore.client()
 
 
 def handle_request(request):
@@ -123,7 +123,7 @@ def analyze(audioURL):
     }
 
     # update firestore document
-    doc_ref = db.collection("analysis")
+    doc_ref = db.collection(u'analysis')
     doc_ref.add(jsh_obj)
 
     print("Jitter result:", jitter_local)
