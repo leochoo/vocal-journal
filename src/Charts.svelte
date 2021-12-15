@@ -44,9 +44,9 @@
         hnr: doc.data().HNR,
       };
       _analysis = [..._analysis, analysisObject];
-      console.log("_analysis", _analysis);
-      analysisList = _analysis;
     });
+    analysisList = _analysis;
+    console.log("_analysis", _analysis);
     updatePlot();
   });
 
@@ -65,19 +65,23 @@
       hnrList = [...hnrList, analysis.hnr];
     });
 
+    // drawspecific plot for jitter, shimmer, and hnr
+    drawSpecificPlot(idList, jitterList, "jitterDiv");
+    drawSpecificPlot(idList, shimmerList, "shimmerDiv");
+    drawSpecificPlot(idList, hnrList, "hnrDiv");
+  }
+
+  function drawSpecificPlot(xList, yList, parameterDivString) {
     let data = [
       {
-        x: idList,
-        y: jitterList,
+        x: xList,
+        y: yList,
         type: "bar",
       },
     ];
-
-    let plotDiv = document.getElementById("plotDiv");
-    Plotly.newPlot(plotDiv, data, {}, { showSendToCloud: true });
+    let targetDiv = document.getElementById(parameterDivString);
+    Plotly.react(targetDiv, data, {}, { showSendToCloud: true });
   }
-
-  let plotHeader = "PlotHeader";
 
   // $: {
 
@@ -110,10 +114,13 @@
 
     <h1>Graphs</h1>
     <div id="plotly">
-      <div>
-        <h3>{plotHeader}</h3>
-      </div>
-      <div id="plotDiv" />
+      <h3>Jitter</h3>
+      <div id="jitterDiv" />
+      <h3>Shimmer</h3>
+      <div id="shimmerDiv" />
+      <h3>HNR</h3>
+      <div id="hnrDiv" />
+
       <!-- <div bind:this={plotDiv} /> -->
       <!-- <JshPlot data={analysisList} /> -->
     </div>
