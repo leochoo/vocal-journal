@@ -116,7 +116,7 @@ def analyze(audioURL):
     shimmer_local = parselmouth.praat.call(
         [sound, pulses], "Get shimmer (local)", 0, 0, 0.0001, 0.02, 1.3, 1.6)
 
-    # HNR
+    # HNR / harmonics to noise ratio
     harmonicity = parselmouth.praat.call(
         sound, "To Harmonicity (cc)", 0.01, 75, 0.1, 1.0)
     hnr = parselmouth.praat.call(harmonicity, "Get mean", 0, 0)

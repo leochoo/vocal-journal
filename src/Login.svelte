@@ -1,6 +1,10 @@
 <script>
   import { auth } from "../firebase.js";
-  import { signInAnonymously } from "firebase/auth";
+  import {
+    signInAnonymously,
+    GoogleAuthProvider,
+    signInWithPopup,
+  } from "firebase/auth";
   import { authState } from "rxfire/auth";
   import { userStatus } from "./stores";
 
@@ -15,10 +19,30 @@
     userStatus.set(user);
     console.log("user_status subscribed", { user_status });
   });
-  async function login() {
+
+  async function anonymousLogin() {
     console.log("log in");
     await signInAnonymously(auth);
   }
+
+  async function googleLogin() {
+    const provider = new GoogleAuthProvider();
+    await signInWithPopup(auth, provider);
+    // .then((result) => {
+    //   // This gives you a Google Access Token. You can use it to access the Google API.
+    //   const credential = GoogleAuthProvider.credentialFromResult(result);
+    //   const token = credential.accessToken;
+    //   // The signed-in user info.
+    //   const user = result.user;
+
+    //   // add user data to users collection
+    //   addUser(user);
+    // })
+    // .catch((error) => {
+    //   console.log(error);
+    // });
+  }
+
   async function logout() {
     console.log("log out");
     await auth.signOut();
@@ -30,8 +54,14 @@
     <button type="button" class="btn btn-dark" on:click={logout}>Logout</button>
     <hr />
   {:else}
-    <button type="button" class="btn btn-dark" on:click={login}>
+    <button type="button" class="btn btn-dark" on:click={anonymousLogin}>
       Sign In Anonymously
     </button>
+    <img
+      on:click={googleLogin}
+      src="./src/assets/btn_google_signin_dark_normal_web@2x.png"
+      alt="Google Login"
+      id="glogin"
+    />
   {/if}
 </main>
