@@ -46,9 +46,6 @@
             <li class="nav-item">
               <Link class="nav-link" to="charts">Charts</Link>
             </li>
-            <li class="nav-item">
-              <Link class="nav-link" to="login">Log in/out</Link>
-            </li>
           </ul>
           <Login />
           <!-- <form class="d-flex">
@@ -69,7 +66,6 @@
         <div>user_status: {user_status.displayName}</div>
         <Route path="upload" component={Upload} />
         <Route path="charts" component={Charts} />
-        <Route path="login" component={Login} />
         <Route path="/"><Dashboard /></Route>
       {:else}
         <!-- <Route path="/" component={Login} /> -->

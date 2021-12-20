@@ -95,8 +95,8 @@
 
 <main>
   <h1>Charts</h1>
-  <p>Audio file list</p>
-  <ul>
+  <!-- <p>Audio file list</p> -->
+  <!-- <ul>
     {#each audioList as audio}
       <li>{audio.audioURL}</li>
     {/each}
@@ -111,18 +111,16 @@
         <li>HNR: {analysis.hnr}</li>
       </ul>
     {/each}
+  </ul> -->
+  <div id="plotly">
+    <h3>Jitter</h3>
+    <div id="jitterDiv" />
+    <h3>Shimmer</h3>
+    <div id="shimmerDiv" />
+    <h3>HNR</h3>
+    <div id="hnrDiv" />
 
-    <h1>Graphs</h1>
-    <div id="plotly">
-      <h3>Jitter</h3>
-      <div id="jitterDiv" />
-      <h3>Shimmer</h3>
-      <div id="shimmerDiv" />
-      <h3>HNR</h3>
-      <div id="hnrDiv" />
-
-      <!-- <div bind:this={plotDiv} /> -->
-      <!-- <JshPlot data={analysisList} /> -->
-    </div>
-  </ul>
+    <!-- <div bind:this={plotDiv} /> -->
+    <!-- <JshPlot data={analysisList} /> -->
+  </div>
 </main>
