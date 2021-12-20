@@ -1,12 +1,13 @@
 <script lang="ts">
   import "bootswatch/dist/litera/bootstrap.min.css";
   import logo from "./assets/svelte.png";
-  import Home from "./Home.svelte";
+  import Dashboard from "./Dashboard.svelte";
   import Upload from "./Upload.svelte";
   import Charts from "./Charts.svelte";
   import Login from "./Login.svelte";
   import { Router, Link, Route } from "svelte-routing";
   import { userStatus } from "./stores";
+  import AccessDenied from "./AccessDenied.svelte";
 
   let user_status;
   userStatus.subscribe((value) => {
@@ -35,7 +36,7 @@
           <ul class="navbar-nav me-auto">
             <li class="nav-item">
               <Link class="nav-link active" to="/"
-                >Home
+                >Dashboard
                 <span class="visually-hidden">(current)</span>
               </Link>
             </li>
@@ -62,14 +63,20 @@
         </div>
       </div>
     </nav>
-    <div>user_status: {user_status}</div>
+    {#if user_status}
+      <div>user_status: {user_status.displayName}</div>
+    {/if}
     <div>
-      <!-- {#if user_status} -->
-      <!-- {/if} -->
-      <Route path="upload" component={Upload} />
-      <Route path="charts" component={Charts} />
-      <Route path="login" component={Login} />
-      <Route path="/"><Home /></Route>
+      {#if user_status}
+        <Route path="upload" component={Upload} />
+        <Route path="charts" component={Charts} />
+        <Route path="login" component={Login} />
+        <Route path="/"><Dashboard /></Route>
+      {:else}
+        <Route path="login" component={Login} />
+
+        <Route path="/" component={AccessDenied} />
+      {/if}
     </div>
   </main>
 </Router>

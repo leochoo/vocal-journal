@@ -28,19 +28,6 @@
   async function googleLogin() {
     const provider = new GoogleAuthProvider();
     await signInWithPopup(auth, provider);
-    // .then((result) => {
-    //   // This gives you a Google Access Token. You can use it to access the Google API.
-    //   const credential = GoogleAuthProvider.credentialFromResult(result);
-    //   const token = credential.accessToken;
-    //   // The signed-in user info.
-    //   const user = result.user;
-
-    //   // add user data to users collection
-    //   addUser(user);
-    // })
-    // .catch((error) => {
-    //   console.log(error);
-    // });
   }
 
   async function logout() {
@@ -51,6 +38,7 @@
 
 <main>
   {#if user_status}
+    hello
     <button type="button" class="btn btn-dark" on:click={logout}>Logout</button>
     <hr />
   {:else}
