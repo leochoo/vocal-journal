@@ -38,13 +38,12 @@
 
 <main>
   {#if user_status}
-    hello
     <button type="button" class="btn btn-dark" on:click={logout}>Logout</button>
     <hr />
   {:else}
-    <button type="button" class="btn btn-dark" on:click={anonymousLogin}>
+    <!-- <button type="button" class="btn btn-dark" on:click={anonymousLogin}>
       Sign In Anonymously
-    </button>
+    </button> -->
     <img
       on:click={googleLogin}
       src="./src/assets/btn_google_signin_dark_normal_web@2x.png"

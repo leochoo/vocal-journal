@@ -50,7 +50,8 @@
               <Link class="nav-link" to="login">Log in/out</Link>
             </li>
           </ul>
-          <form class="d-flex">
+          <Login />
+          <!-- <form class="d-flex">
             <input
               class="form-control me-sm-2"
               type="text"
@@ -59,22 +60,19 @@
             <button class="btn btn-dark my-2 my-sm-0" type="submit"
               >Search</button
             >
-          </form>
+          </form> -->
         </div>
       </div>
     </nav>
-    {#if user_status}
-      <div>user_status: {user_status.displayName}</div>
-    {/if}
-    <div>
+    <div class="container">
       {#if user_status}
+        <div>user_status: {user_status.displayName}</div>
         <Route path="upload" component={Upload} />
         <Route path="charts" component={Charts} />
         <Route path="login" component={Login} />
         <Route path="/"><Dashboard /></Route>
       {:else}
-        <Route path="login" component={Login} />
-
+        <!-- <Route path="/" component={Login} /> -->
         <Route path="/" component={AccessDenied} />
       {/if}
     </div>
