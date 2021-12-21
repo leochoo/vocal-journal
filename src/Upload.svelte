@@ -1,5 +1,7 @@
 <script>
   import { storage, db } from "../firebase.js";
+  import { userStatus } from "./stores";
+
   import {
     ref,
     uploadBytes,
@@ -13,6 +15,11 @@
   let recorder = null;
 
   let uploadStatus = "";
+
+  let user_status;
+  userStatus.subscribe((value) => {
+    user_status = value;
+  });
 
   async function record() {
     newAudio = null;
@@ -106,9 +113,11 @@
       audioURL: downloadURL,
     });
     console.log("newAudioURL", newAudioURL);
+
     triggerCloudFunction(downloadURL);
+
     // local testing
-    triggerLocalFunction(downloadURL);
+    // triggerLocalFunction(downloadURL);
   }
 
   async function triggerCloudFunction(downloadURL) {
@@ -122,6 +131,8 @@
       },
       body: JSON.stringify({
         audioURL: downloadURL,
+        uid: user_status.uid,
+        displayName: user_status.displayName,
       }),
     });
     // console.log(response);
@@ -144,6 +155,8 @@
       },
       body: JSON.stringify({
         audioURL: downloadURL,
+        uid: user_status.uid,
+        displayName: user_status.displayName,
       }),
     });
     const data = await response.json();

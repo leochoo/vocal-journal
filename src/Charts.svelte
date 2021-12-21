@@ -38,7 +38,7 @@
     var _analysis = [];
     querySnapshot.forEach((doc) => {
       const analysisObject = {
-        id: doc.id,
+        displayName: doc.data().displayName,
         jitter: doc.data().jitter_local,
         shimmer: doc.data().shimmer_local,
         hnr: doc.data().HNR,
@@ -53,22 +53,22 @@
   function updatePlot() {
     console.log("updatePlot");
     // extract jsh into arrays
-    let idList = [];
+    let displayNameList = [];
     let jitterList = [];
     let shimmerList = [];
     let hnrList = [];
 
     analysisList.forEach((analysis) => {
-      idList = [...idList, analysis.id];
+      displayNameList = [...displayNameList, analysis.displayName];
       jitterList = [...jitterList, analysis.jitter];
       shimmerList = [...shimmerList, analysis.shimmer];
       hnrList = [...hnrList, analysis.hnr];
     });
 
     // drawspecific plot for jitter, shimmer, and hnr
-    drawSpecificPlot(idList, jitterList, "jitterDiv");
-    drawSpecificPlot(idList, shimmerList, "shimmerDiv");
-    drawSpecificPlot(idList, hnrList, "hnrDiv");
+    drawSpecificPlot(displayNameList, jitterList, "jitterDiv");
+    drawSpecificPlot(displayNameList, shimmerList, "shimmerDiv");
+    drawSpecificPlot(displayNameList, hnrList, "hnrDiv");
   }
 
   function drawSpecificPlot(xList, yList, parameterDivString) {

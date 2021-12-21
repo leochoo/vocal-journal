@@ -47,9 +47,8 @@ def handle_request(request):
 
     request_json = request.get_json()
 
-# parse request parameters
-    audioURL = request_json["audioURL"]
-    result = analyze(audioURL)
+    # parse request parameters
+    result = analyze(request_json)
     print("Analysis result", result)
     return_message = {"data": result}
     print("return message:", return_message)
@@ -61,8 +60,11 @@ def get_file_path(filename):
     return os.path.join(tempfile.gettempdir(), filename)
 
 
-def analyze(audioURL):
+def analyze(postObject):
     # 1. Preprocessing
+    uid = postObject["uid"]
+    displayName = postObject["displayName"]
+    audioURL = postObject["audioURL"]
     # Download sound file
     input_name = "input.wav"
     input_path = get_file_path(input_name)
@@ -103,6 +105,8 @@ def analyze(audioURL):
 
     # jitter shimmer hnr object
     jsh_obj = {
+        "uid": uid,
+        "displayName": displayName,
         "jitter_local": jitter_local,
         "shimmer_local": shimmer_local,
         "HNR": hnr
