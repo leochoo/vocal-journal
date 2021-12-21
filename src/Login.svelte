@@ -38,15 +38,24 @@
   }
 
   async function addUser(user) {
-    const userRef = await setDoc(doc(db, "users", user.uid), {
-      displayName: user.displayName,
-      email: user.email,
-      photoURL: user.photoURL,
-      uid: user.uid,
-      createdAt: new Date(),
-      updatedAt: new Date(),
-    });
-    console.log("user added to Firestore");
+    const userRef = doc(db, "users", user.uid);
+    const docSnap = await getDoc(userRef);
+    if (docSnap.exists()) {
+      await updateDoc(userRef, {
+        updatedAt: new Date(),
+      });
+      console.log("Updated user info");
+    } else {
+      await setDoc(userRef, {
+        displayName: user.displayName,
+        email: user.email,
+        photoURL: user.photoURL,
+        uid: user.uid,
+        createdAt: new Date(),
+        updatedAt: new Date(),
+      });
+      console.log("New User to firestore");
+    }
   }
 
   async function logout() {
