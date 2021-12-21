@@ -7,6 +7,17 @@
   } from "firebase/auth";
   import { authState } from "rxfire/auth";
   import { userStatus } from "./stores";
+  import { db } from "../firebase";
+  import {
+    collection,
+    addDoc,
+    query,
+    where,
+    getDoc,
+    updateDoc,
+    doc,
+    setDoc,
+  } from "firebase/firestore";
 
   let user_status;
   userStatus.subscribe((value) => {
@@ -20,14 +31,22 @@
     console.log("user_status subscribed", { user_status });
   });
 
-  async function anonymousLogin() {
-    console.log("log in");
-    await signInAnonymously(auth);
-  }
-
   async function googleLogin() {
     const provider = new GoogleAuthProvider();
-    await signInWithPopup(auth, provider);
+    const result = await signInWithPopup(auth, provider);
+    addUser(result.user);
+  }
+
+  async function addUser(user) {
+    const userRef = await setDoc(doc(db, "users", user.uid), {
+      displayName: user.displayName,
+      email: user.email,
+      photoURL: user.photoURL,
+      uid: user.uid,
+      createdAt: new Date(),
+      updatedAt: new Date(),
+    });
+    console.log("user added to Firestore");
   }
 
   async function logout() {
