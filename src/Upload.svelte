@@ -106,30 +106,49 @@
       audioURL: downloadURL,
     });
     console.log("newAudioURL", newAudioURL);
-    // trigger cloud function
     triggerCloudFunction(downloadURL);
+    // local testing
+    triggerLocalFunction(downloadURL);
   }
 
   async function triggerCloudFunction(downloadURL) {
-    const response = await fetch(
-      "https://asia-northeast1-vocal-journal.cloudfunctions.net/parselmouth?audioURL=" +
-        downloadURL
-    );
+    console.log("CLOUD triggered");
+    const url =
+      "https://asia-northeast1-vocal-journal.cloudfunctions.net/parselmouth";
+    const response = await fetch(url, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        audioURL: downloadURL,
+      }),
+    });
     // console.log(response);
     const data = await response.json();
     // const data = await response.body.values;
-    console.log("data: ", data);
+    console.log("CLOUD data: ", data);
   }
 
   async function triggerLocalFunction(downloadURL) {
-    console.log("downloadURL", downloadURL);
-    const response = await fetch(
-      "http://127.0.0.1:5001?audioURL=" + downloadURL
-    );
-    // console.log(response);
+    console.log("LOCAL triggered");
+    // console.log("downloadURL", downloadURL);
+    const localURL = "http://127.0.0.1:5001";
+    const response = await fetch(localURL, {
+      method: "POST",
+      headers: {
+        "Access-Control-Allow-Origin": "*",
+        "Access-Control-Allow-Methods": "*",
+        "Access-Control-Allow-Headers": "Content-Type",
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        audioURL: downloadURL,
+      }),
+    });
     const data = await response.json();
+    console.log("LOCAL data: ", data);
     // const data = await response.body.values;
-    console.log("data: ", data);
   }
 </script>
 

@@ -8,10 +8,10 @@ import ffmpeg
 import os
 import tempfile
 import parselmouth
-# from flask_cors import CORS
+from flask_cors import CORS
 
 app = Flask(__name__)
-# CORS(app)
+CORS(app)
 
 # Use a service account
 os.environ['GOOGLE_APPLICATION_CREDENTIALS'] = '/Users/leochoo/dev/vocal-journal/.key/vocal-journal-firebase-adminsdk-oun5i-107f90e11f.json'
@@ -22,7 +22,7 @@ firebase_admin.initialize_app(cred)
 db = firestore.client()
 
 
-@app.route('/')
+@app.route('/', methods=["POST"])
 def handle_request():
     # async def handle_request():
     # For more information about CORS and CORS preflight requests, see:
@@ -34,8 +34,9 @@ def handle_request():
         # header and caches preflight response for an 3600s
         headers = {
             'Access-Control-Allow-Origin': '*',
-            'Access-Control-Allow-Methods': 'GET',
-            'Access-Control-Allow-Headers': 'Content-Type',
+            "Access-Control-Allow-Headers": "Content-Type",
+            "Access-Control-Allow-Methods": "OPTIONS,POST,PUT,GET",
+            "Content-Type": "application/json",
             'Access-Control-Max-Age': '3600'
         }
 
@@ -53,26 +54,29 @@ def handle_request():
 
     # Set CORS headers for the main request
     headers = {
-        'Access-Control-Allow-Origin': '*'
+        "Access-Control-Allow-Origin": "*",
+        "Access-Control-Allow-Methods": "*",
+        "Access-Control-Allow-Headers": "Content-Type",
+        "Content-Type": "application/json",
     }
 
     return_message = ""
 
-    request_json = request.get_json()
-    if request.args and 'message' in request.args:
-        return_message = request.args.get('message')
-    elif request_json and 'message' in request_json:
-        return_message = request_json['message']
-    else:
-        # parse request parameters
-        audioURL = request.args.get("audioURL")
-        token = request.args.get("token")
-        print("audioURL:", audioURL)
-        print("token:", token)
-        finalURL = audioURL+"&token="+token
-        result = analyze(finalURL)
-        print("Analysis result", result)
-        return_message = {"data": result}
+    # print("request.get data", request.get_data())
+    request_json = request.get_json(force=True)
+    print("request_json", request_json)
+
+    # for debugging
+    if request_json and 'message' in request_json:
+        print("Testing", request_json['message'])
+        # return_message = {"data": request_json['message']}
+
+    # parse request parameters
+    audioURL = request_json["audioURL"]
+    result = analyze(audioURL)
+    print("Analysis result", result)
+    return_message = {"data": result}
+    print("return message:", return_message)
 
     return (return_message, 200, headers)
 
