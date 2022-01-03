@@ -48,45 +48,57 @@
     var _analysis = [];
     querySnapshot.forEach((doc) => {
       const analysisObject = {
+        createdAt: doc.data().createdAt,
+        audioURL: doc.data().audioURL,
+        uid: doc.data().uid,
         displayName: doc.data().displayName,
         jitter: doc.data().jitter_local,
         shimmer: doc.data().shimmer_local,
         hnr: doc.data().HNR,
       };
 
-      // check if an object with the same displayName already exists
-      const index = _analysis.findIndex(
-        (obj) => obj.displayName === analysisObject.displayName
-      );
-      // if it exists, skip it, else append data to array
-      if (index === -1) {
-        _analysis = [..._analysis, analysisObject];
-      }
+      _analysis = [..._analysis, analysisObject];
     });
     analysisList = _analysis;
     console.log("_analysis", _analysis);
     updatePlot();
   });
 
+  function format_time(s) {
+    const dtFormat = new Intl.DateTimeFormat("en-US", {
+      dateStyle: "short",
+      timeStyle: "short",
+      timeZone: "JST",
+    });
+
+    return dtFormat.format(s);
+  }
+
   function updatePlot() {
     console.log("updatePlot");
     // extract jsh into arrays
+    let createdAtList = [];
     let displayNameList = [];
     let jitterList = [];
     let shimmerList = [];
     let hnrList = [];
 
     analysisList.forEach((analysis) => {
+      createdAtList = [...createdAtList, format_time(analysis.createdAt)];
       displayNameList = [...displayNameList, analysis.displayName];
       jitterList = [...jitterList, analysis.jitter];
       shimmerList = [...shimmerList, analysis.shimmer];
       hnrList = [...hnrList, analysis.hnr];
     });
 
+    console.log("createdAtList: ", createdAtList);
+    console.log("type", typeof createdAtList[1]);
+    console.log("displayNameList: ", displayNameList);
+    console.log("jitterList: ", jitterList);
     // drawspecific plot for jitter, shimmer, and hnr
-    drawSpecificPlot(displayNameList, jitterList, "jitterDiv");
-    drawSpecificPlot(displayNameList, shimmerList, "shimmerDiv");
-    drawSpecificPlot(displayNameList, hnrList, "hnrDiv");
+    drawSpecificPlot(createdAtList, jitterList, "jitterDiv");
+    drawSpecificPlot(createdAtList, shimmerList, "shimmerDiv");
+    drawSpecificPlot(createdAtList, hnrList, "hnrDiv");
   }
 
   function drawSpecificPlot(xList, yList, parameterDivString) {
@@ -100,11 +112,6 @@
     let targetDiv = document.getElementById(parameterDivString);
     Plotly.react(targetDiv, data, {}, { showSendToCloud: true });
   }
-
-  // $: {
-
-  //   Plotly.newPlot(plotDiv, data, {}, { showSendToCloud: true });
-  // }
 
   onMount(() => {
     console.log("onMount render");
