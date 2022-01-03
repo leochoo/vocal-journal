@@ -1,12 +1,18 @@
 <script lang="ts">
-  import "bootswatch/dist/litera/bootstrap.min.css";
   import logo from "./assets/svelte.png";
-  import Home from "./Home.svelte";
+  import Dashboard from "./Dashboard.svelte";
   import Upload from "./Upload.svelte";
   import Charts from "./Charts.svelte";
   import Login from "./Login.svelte";
   import { Router, Link, Route } from "svelte-routing";
   import { userStatus } from "./stores";
+  import AccessDenied from "./AccessDenied.svelte";
+  import {
+    Dropdown,
+    DropdownItem,
+    DropdownMenu,
+    DropdownToggle,
+  } from "sveltestrap";
 
   let user_status;
   userStatus.subscribe((value) => {
@@ -14,12 +20,19 @@
   });
 </script>
 
+<svelte:head>
+  <link
+    rel="stylesheet"
+    href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.0/dist/css/bootstrap.min.css"
+  />
+</svelte:head>
+
 <Router>
   <main>
     <nav class="navbar navbar-expand-lg navbar-dark bg-primary">
       <div class="container-fluid">
         <Link class="navbar-brand" to="">Vocal Journal</Link>
-        <button
+        <!-- <button
           class="navbar-toggler"
           type="button"
           data-bs-toggle="collapse"
@@ -29,13 +42,25 @@
           aria-label="Toggle navigation"
         >
           <span class="navbar-toggler-icon" />
-        </button>
+        </button> -->
+        <Dropdown>
+          <DropdownToggle caret>Dropdown</DropdownToggle>
+          <DropdownMenu>
+            <DropdownItem header>Header</DropdownItem>
+            <DropdownItem>Some Action</DropdownItem>
+            <DropdownItem disabled>Action (disabled)</DropdownItem>
+            <DropdownItem divider />
+            <DropdownItem>Foo Action</DropdownItem>
+            <DropdownItem>Bar Action</DropdownItem>
+            <DropdownItem>Quo Action</DropdownItem>
+          </DropdownMenu>
+        </Dropdown>
 
         <div class="collapse navbar-collapse" id="navbarColor01">
           <ul class="navbar-nav me-auto">
             <li class="nav-item">
               <Link class="nav-link active" to="/"
-                >Home
+                >Dashboard
                 <span class="visually-hidden">(current)</span>
               </Link>
             </li>
@@ -45,11 +70,9 @@
             <li class="nav-item">
               <Link class="nav-link" to="charts">Charts</Link>
             </li>
-            <li class="nav-item">
-              <Link class="nav-link" to="login">Log in/out</Link>
-            </li>
           </ul>
-          <form class="d-flex">
+          <Login />
+          <!-- <form class="d-flex">
             <input
               class="form-control me-sm-2"
               type="text"
@@ -58,18 +81,20 @@
             <button class="btn btn-dark my-2 my-sm-0" type="submit"
               >Search</button
             >
-          </form>
+          </form> -->
         </div>
       </div>
     </nav>
-    <div>user_status: {user_status}</div>
-    <div>
-      <!-- {#if user_status} -->
-      <!-- {/if} -->
-      <Route path="upload" component={Upload} />
-      <Route path="charts" component={Charts} />
-      <Route path="login" component={Login} />
-      <Route path="/"><Home /></Route>
+    <div class="container">
+      {#if user_status}
+        <div>user_status: {user_status.displayName}</div>
+        <Route path="upload" component={Upload} />
+        <Route path="charts" component={Charts} />
+        <Route path="/"><Dashboard /></Route>
+      {:else}
+        <!-- <Route path="/" component={Login} /> -->
+        <Route path="/" component={AccessDenied} />
+      {/if}
     </div>
   </main>
 </Router>

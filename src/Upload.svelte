@@ -1,5 +1,7 @@
 <script>
   import { storage, db } from "../firebase.js";
+  import { userStatus } from "./stores";
+
   import {
     ref,
     uploadBytes,
@@ -13,6 +15,11 @@
   let recorder = null;
 
   let uploadStatus = "";
+
+  let user_status;
+  userStatus.subscribe((value) => {
+    user_status = value;
+  });
 
   async function record() {
     newAudio = null;
@@ -52,7 +59,10 @@
   // upload audio to Firebase storage and get download url
   async function upload() {
     if (newAudio) {
-      const storageRef = ref(storage, "audio_" + Date.now().toString());
+      const storageRef = ref(
+        storage,
+        "audio/" + user_status.uid + "/" + Date.now().toString()
+      );
       const metadata = {
         contentType: "audio/wav",
       };
@@ -101,23 +111,62 @@
   }
 
   async function saveURL(downloadURL) {
+    const currTime = Date.now();
     const newAudioURL = await addDoc(collection(db, "audio"), {
-      createdAt: Date.now(),
+      createdAt: currTime,
       audioURL: downloadURL,
     });
-    console.log(newAudioURL);
-    // trigger cloud function
-    testTriggerCloudFunction();
+    console.log("newAudioURL", newAudioURL);
+
+    triggerCloudFunction(currTime, downloadURL);
+
+    // local testing
+    // triggerLocalFunction(downloadURL);
   }
 
-  async function testTriggerCloudFunction() {
-    const response = await fetch(
-      "http://asia-northeast1-vocal-journal.cloudfunctions.net/function-0"
-    );
+  async function triggerCloudFunction(currTime, downloadURL) {
+    console.log("CLOUD triggered");
+    const url =
+      "https://asia-northeast1-vocal-journal.cloudfunctions.net/parselmouth";
+    const response = await fetch(url, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        createdAt: currTime,
+        audioURL: downloadURL,
+        uid: user_status.uid,
+        displayName: user_status.displayName,
+      }),
+    });
     // console.log(response);
     const data = await response.json();
     // const data = await response.body.values;
-    console.log("data: ", data);
+    console.log("CLOUD data: ", data);
+  }
+
+  async function triggerLocalFunction(downloadURL) {
+    console.log("LOCAL triggered");
+    // console.log("downloadURL", downloadURL);
+    const localURL = "http://127.0.0.1:5001";
+    const response = await fetch(localURL, {
+      method: "POST",
+      headers: {
+        "Access-Control-Allow-Origin": "*",
+        "Access-Control-Allow-Methods": "*",
+        "Access-Control-Allow-Headers": "Content-Type",
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        audioURL: downloadURL,
+        uid: user_status.uid,
+        displayName: user_status.displayName,
+      }),
+    });
+    const data = await response.json();
+    console.log("LOCAL data: ", data);
+    // const data = await response.body.values;
   }
 </script>
 
@@ -142,8 +191,5 @@
 
   <div>{uploadStatus}</div>
 
-  <button type="text" on:click={() => testTriggerCloudFunction()}
-    >Test Trigger</button
-  >
   <hr />
 </main>

@@ -8,12 +8,12 @@
     "serve": "vite preview",
     "check": "svelte-check --tsconfig ./tsconfig.json",
     "deploy": "npm run build && firebase deploy --only hosting:journal",
-    "gcloud-deploy-parsel": "gcloud functions deploy function-0 --region=asia-northeast1 --project=vocal-journal --entry-point=handle_request --runtime=python39 --trigger-http --source=functions/parselmouth"
+    "gcloud-deploy-parsel": "gcloud functions deploy parselmouth --region=asia-northeast1 --allow-unauthenticated --project=vocal-journal --entry-point=handle_request --runtime=python39 --trigger-http --source=backend/cloud_functions/parselmouth"
   },
   "devDependencies": {
     "@sveltejs/vite-plugin-svelte": "^1.0.0-next.11",
     "@tsconfig/svelte": "^2.0.1",
-    "svelte": "^3.37.0",
+    "svelte": "^3.44.3",
     "svelte-check": "^2.1.0",
     "svelte-preprocess": "^4.7.2",
     "tslib": "^2.2.0",
@@ -21,12 +21,13 @@
     "vite": "^2.6.4"
   },
   "dependencies": {
+    "bootstrap": "^5.1.3",
     "bootswatch": "^5.1.3",
     "firebase": "^9.4.0",
-    "opus-recorder": "^8.0.5",
     "plotly.js-dist": "^2.6.2",
     "rxfire": "^6.0.3",
     "rxjs": "^7.4.0",
-    "svelte-routing": "^1.6.0"
+    "svelte-routing": "^1.6.0",
+    "sveltestrap": "^5.6.3"
   }
 }
