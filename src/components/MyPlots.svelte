@@ -1,5 +1,4 @@
 <script>
-  import JshPlot from "./components/MyPlots.svelte";
   import Plotly from "plotly.js-dist";
   import { onMount } from "svelte";
   import {
@@ -11,7 +10,13 @@
     onSnapshot,
     orderBy,
   } from "firebase/firestore";
-  import { db } from "../firebase.js";
+  import { db } from "../../firebase.js";
+  import { userStatus } from "../stores";
+
+  let user_status;
+  userStatus.subscribe((value) => {
+    user_status = value;
+  });
 
   // let audioList = [];
   // const q = query(
@@ -35,7 +40,8 @@
   let analysisList = [];
 
   const analysisQuery = query(
-    collection(db, "analysis")
+    collection(db, "analysis"),
+    where("uid", "==", user_status.uid)
     // orderBy("createdAt", "desc")
   );
   const unsubscribe = onSnapshot(analysisQuery, (querySnapshot) => {
@@ -106,7 +112,7 @@
 </script>
 
 <main>
-  <h1>Charts</h1>
+  <h1>My Plots</h1>
   <!-- <p>Audio file list</p> -->
   <!-- <ul>
     {#each audioList as audio}

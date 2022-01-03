@@ -1,5 +1,4 @@
 <script lang="ts">
-  import "bootswatch/dist/litera/bootstrap.min.css";
   import logo from "./assets/svelte.png";
   import Dashboard from "./Dashboard.svelte";
   import Upload from "./Upload.svelte";
@@ -8,6 +7,12 @@
   import { Router, Link, Route } from "svelte-routing";
   import { userStatus } from "./stores";
   import AccessDenied from "./AccessDenied.svelte";
+  import {
+    Dropdown,
+    DropdownItem,
+    DropdownMenu,
+    DropdownToggle,
+  } from "sveltestrap";
 
   let user_status;
   userStatus.subscribe((value) => {
@@ -15,12 +20,19 @@
   });
 </script>
 
+<svelte:head>
+  <link
+    rel="stylesheet"
+    href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.0/dist/css/bootstrap.min.css"
+  />
+</svelte:head>
+
 <Router>
   <main>
     <nav class="navbar navbar-expand-lg navbar-dark bg-primary">
       <div class="container-fluid">
         <Link class="navbar-brand" to="">Vocal Journal</Link>
-        <button
+        <!-- <button
           class="navbar-toggler"
           type="button"
           data-bs-toggle="collapse"
@@ -30,7 +42,19 @@
           aria-label="Toggle navigation"
         >
           <span class="navbar-toggler-icon" />
-        </button>
+        </button> -->
+        <Dropdown>
+          <DropdownToggle caret>Dropdown</DropdownToggle>
+          <DropdownMenu>
+            <DropdownItem header>Header</DropdownItem>
+            <DropdownItem>Some Action</DropdownItem>
+            <DropdownItem disabled>Action (disabled)</DropdownItem>
+            <DropdownItem divider />
+            <DropdownItem>Foo Action</DropdownItem>
+            <DropdownItem>Bar Action</DropdownItem>
+            <DropdownItem>Quo Action</DropdownItem>
+          </DropdownMenu>
+        </Dropdown>
 
         <div class="collapse navbar-collapse" id="navbarColor01">
           <ul class="navbar-nav me-auto">

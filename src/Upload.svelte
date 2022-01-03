@@ -59,7 +59,10 @@
   // upload audio to Firebase storage and get download url
   async function upload() {
     if (newAudio) {
-      const storageRef = ref(storage, "audio_" + Date.now().toString());
+      const storageRef = ref(
+        storage,
+        "audio/" + user_status.uid + "/" + Date.now().toString()
+      );
       const metadata = {
         contentType: "audio/wav",
       };
@@ -108,19 +111,20 @@
   }
 
   async function saveURL(downloadURL) {
+    const currTime = Date.now();
     const newAudioURL = await addDoc(collection(db, "audio"), {
-      createdAt: Date.now(),
+      createdAt: currTime,
       audioURL: downloadURL,
     });
     console.log("newAudioURL", newAudioURL);
 
-    triggerCloudFunction(downloadURL);
+    triggerCloudFunction(currTime, downloadURL);
 
     // local testing
     // triggerLocalFunction(downloadURL);
   }
 
-  async function triggerCloudFunction(downloadURL) {
+  async function triggerCloudFunction(currTime, downloadURL) {
     console.log("CLOUD triggered");
     const url =
       "https://asia-northeast1-vocal-journal.cloudfunctions.net/parselmouth";
@@ -130,6 +134,7 @@
         "Content-Type": "application/json",
       },
       body: JSON.stringify({
+        createdAt: currTime,
         audioURL: downloadURL,
         uid: user_status.uid,
         displayName: user_status.displayName,

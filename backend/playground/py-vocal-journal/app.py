@@ -86,9 +86,10 @@ def get_file_path(filename):
 
 def analyze(postObject):
     # 1. Preprocessing
+    createdAt = postObject["createdAt"]
+    audioURL = postObject["audioURL"]
     uid = postObject["uid"]
     displayName = postObject["displayName"]
-    audioURL = postObject["audioURL"]
     # Download sound file
     input_name = "input.wav"
     input_path = get_file_path(input_name)
@@ -129,6 +130,7 @@ def analyze(postObject):
 
     # jitter shimmer hnr object
     jsh_obj = {
+        "createdAt": createdAt,
         "uid": uid,
         "displayName": displayName,
         "jitter_local": jitter_local,
