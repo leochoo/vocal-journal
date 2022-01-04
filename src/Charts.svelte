@@ -49,13 +49,14 @@
       };
 
       // check if an object with the same displayName already exists
-      const index = _analysis.findIndex(
-        (obj) => obj.displayName === analysisObject.displayName
-      );
-      // if it exists, skip it, else append data to array
-      if (index === -1) {
-        _analysis = [..._analysis, analysisObject];
-      }
+      // const index = _analysis.findIndex(
+      //   (obj) => obj.displayName === analysisObject.displayName
+      // );
+      // // if it exists, skip it, else append data to array
+      // if (index === -1) {
+      //   _analysis = [..._analysis, analysisObject];
+      // }
+      _analysis = [..._analysis, analysisObject];
     });
     analysisList = _analysis;
     console.log("_analysis", _analysis);
