@@ -135,9 +135,12 @@
       },
       body: JSON.stringify({
         createdAt: currTime,
+        lastUpdated: currTime, // need to fix later
         audioURL: downloadURL,
         uid: user_status.uid,
         displayName: user_status.displayName,
+        label: "",
+        notes: "",
       }),
     });
     // console.log(response);

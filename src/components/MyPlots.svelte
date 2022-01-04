@@ -74,6 +74,9 @@
     return dtFormat.format(s);
   }
 
+  let min_jitter;
+  let max_jitter;
+
   function updatePlot() {
     console.log("updatePlot");
     // extract jsh into arrays
@@ -90,6 +93,9 @@
       shimmerList = [...shimmerList, analysis.shimmer];
       hnrList = [...hnrList, analysis.hnr];
     });
+
+    min_jitter = Math.min(...jitterList);
+    max_jitter = Math.max(...jitterList);
 
     console.log("createdAtList: ", createdAtList);
     console.log("type", typeof createdAtList[1]);
@@ -120,26 +126,36 @@
 
 <main>
   <h1>My Plots</h1>
-  <!-- <p>Audio file list</p> -->
-  <!-- <ul>
-    {#each audioList as audio}
-      <li>{audio.audioURL}</li>
-    {/each}
-  </ul>
-  <p>Analysis data</p>
-  <ul>
-    {#each analysisList as analysis}
-      <li>User: {analysis.id}</li>
-      <ul>
-        <li>Jitter: {analysis.jitter}</li>
-        <li>Shimmer: {analysis.shimmer}</li>
-        <li>HNR: {analysis.hnr}</li>
-      </ul>
-    {/each}
-  </ul> -->
   <div id="plotly">
     <h3>Jitter</h3>
     <div id="jitterDiv" />
+    <table>
+      <tr>
+        <th>Created At</th>
+        <th>Display Name</th>
+        <th>Jitter</th>
+      </tr>
+      {#each analysisList as analysis}
+        <tr>
+          <td>{format_time(analysis.createdAt)}</td>
+          <td>{analysis.displayName}</td>
+          <td>{analysis.jitter}</td>
+          <td>
+            <audio controls>
+              <source src={analysis.audioURL} type="audio/wav" />
+            </audio>
+          </td>
+          <!-- label lowest jitter as best and highest as worst -->
+          {#if analysis.jitter == min_jitter}
+            <td>Best</td>
+          {:else if analysis.jitter == max_jitter}
+            <td>Worst</td>
+          {:else}
+            <td />
+          {/if}
+        </tr>
+      {/each}
+    </table>
     <h3>Shimmer</h3>
     <div id="shimmerDiv" />
     <h3>HNR</h3>

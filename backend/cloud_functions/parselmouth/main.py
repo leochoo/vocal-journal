@@ -63,9 +63,13 @@ def get_file_path(filename):
 def analyze(postObject):
     # 1. Preprocessing
     createdAt = postObject["createdAt"]
+    lastUpdated = postObject["lastUpdated"]
     audioURL = postObject["audioURL"]
     uid = postObject["uid"]
     displayName = postObject["displayName"]
+    label = postObject["label"]
+    notes = postObject["notes"]
+
     # Download sound file
     input_name = "input.wav"
     input_path = get_file_path(input_name)
@@ -104,12 +108,15 @@ def analyze(postObject):
         sound, "To Harmonicity (cc)", 0.01, 75, 0.1, 1.0)
     hnr = parselmouth.praat.call(harmonicity, "Get mean", 0, 0)
 
-    # jitter shimmer hnr object
-    jsh_obj = {
+    # add jitter shimmer hnr to analysis object
+    analysis_object = {
         "createdAt": createdAt,
+        "lastUpdated": lastUpdated,
         "audioURL": audioURL,
         "uid": uid,
         "displayName": displayName,
+        "label": label,
+        "notes": notes,
         "jitter_local": jitter_local,
         "shimmer_local": shimmer_local,
         "HNR": hnr
@@ -117,8 +124,8 @@ def analyze(postObject):
 
     # update firestore document
     doc_ref = db.collection(u'analysis')
-    doc_ref.add(jsh_obj)
+    doc_ref.add(analysis_object)
 
     print("Jitter result:", jitter_local)
 
-    return jsh_obj
+    return analysis_object
