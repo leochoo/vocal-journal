@@ -177,6 +177,13 @@
   <h1>Upload</h1>
   <h5>Record Audio</h5>
 
+  <p>
+    音程の/あ/の発音を2秒、間録音してください。音程はできるだけ均一にしてください。
+  </p>
+  <p>
+    Record /a/ vowel for 2 seconds. Try your best to keep the pitch consistent.
+  </p>
+
   {#if !recorder}
     <button on:click={() => record()} class="button is-info"
       >Record Voice</button

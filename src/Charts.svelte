@@ -50,6 +50,10 @@
 
   let min_jitter;
   let max_jitter;
+  let min_shimmer;
+  let max_shimmer;
+  let min_hnr;
+  let max_hnr;
 
   function updatePlot() {
     console.log("updatePlot");
@@ -68,6 +72,10 @@
 
     min_jitter = Math.min(...jitterList);
     max_jitter = Math.max(...jitterList);
+    min_shimmer = Math.min(...shimmerList);
+    max_shimmer = Math.max(...shimmerList);
+    min_hnr = Math.min(...hnrList);
+    max_hnr = Math.max(...hnrList);
 
     // drawspecific plot for jitter, shimmer, and hnr
     drawSpecificPlot(displayNameList, jitterList, "jitterDiv");
@@ -140,10 +148,63 @@
     </table>
     <h3>Shimmer</h3>
     <div id="shimmerDiv" />
+    <table>
+      <tr>
+        <th>Created At</th>
+        <th>Display Name</th>
+        <th>Shimmer</th>
+      </tr>
+      {#each analysisList as analysis}
+        <tr>
+          <td>{format_time(analysis.createdAt)}</td>
+          <td>{analysis.displayName}</td>
+          <td>{analysis.shimmer}</td>
+
+          <td>
+            <audio controls>
+              <source src={analysis.audioURL} type="audio/wav" />
+            </audio>
+          </td>
+          <!-- label lowest shimmer as best and highest as worst -->
+          {#if analysis.shimmer == min_shimmer}
+            <td>Best</td>
+          {:else if analysis.shimmer == max_shimmer}
+            <td>Worst</td>
+          {:else}
+            <td />
+          {/if}
+        </tr>
+      {/each}
+    </table>
     <h3>HNR</h3>
     <div id="hnrDiv" />
+    <table>
+      <tr>
+        <th>Created At</th>
+        <th>Display Name</th>
+        <th>HNR</th>
+      </tr>
+      {#each analysisList as analysis}
+        <tr>
+          <td>{format_time(analysis.createdAt)}</td>
+          <td>{analysis.displayName}</td>
+          <td>{analysis.hnr}</td>
 
-    <!-- <div bind:this={plotDiv} /> -->
-    <!-- <JshPlot data={analysisList} /> -->
+          <td>
+            <audio controls>
+              <source src={analysis.audioURL} type="audio/wav" />
+            </audio>
+          </td>
+          <!-- label lowest hnr as best and highest as worst -->
+          {#if analysis.hnr == max_hnr}
+            <td>Best</td>
+          {:else if analysis.hnr == min_hnr}
+            <td>Worst</td>
+          {:else}
+            <td />
+          {/if}
+        </tr>
+      {/each}
+    </table>
   </div>
 </main>
