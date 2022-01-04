@@ -67,7 +67,7 @@
   function format_time(s) {
     const dtFormat = new Intl.DateTimeFormat("en-US", {
       dateStyle: "short",
-      timeStyle: "short",
+      timeStyle: "full",
       timeZone: "JST",
     });
 
@@ -140,6 +140,7 @@
           <td>{format_time(analysis.createdAt)}</td>
           <td>{analysis.displayName}</td>
           <td>{analysis.jitter}</td>
+
           <td>
             <audio controls>
               <source src={analysis.audioURL} type="audio/wav" />

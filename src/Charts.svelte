@@ -13,35 +13,20 @@
   } from "firebase/firestore";
   import { db } from "../firebase.js";
 
-  // let audioList = [];
-  // const q = query(
-  //   collection(db, "audio"),
-  //   // where("owner", "==", uid),
-  //   orderBy("createdAt", "desc")
-  // );
-  // const unsubscribe2 = onSnapshot(q, (querySnapshot) => {
-  //   var audios = [];
-  //   querySnapshot.forEach((doc) => {
-  //     const audioObject = {
-  //       createdAt: doc.data().createdAt,
-  //       audioURL: doc.data().audioURL,
-  //     };
-  //     audios = [...audios, audioObject];
-  //     audioList = audios;
-  //   });
-  // });
-
   // grab analysis data from firestore
   let analysisList = [];
 
   const analysisQuery = query(
-    collection(db, "analysis")
-    // orderBy("createdAt", "desc")
+    collection(db, "analysis"),
+    orderBy("createdAt", "desc")
   );
   const unsubscribe = onSnapshot(analysisQuery, (querySnapshot) => {
     var _analysis = [];
     querySnapshot.forEach((doc) => {
       const analysisObject = {
+        createdAt: doc.data().createdAt,
+        audioURL: doc.data().audioURL,
+        uid: doc.data().uid,
         displayName: doc.data().displayName,
         jitter: doc.data().jitter_local,
         shimmer: doc.data().shimmer_local,
@@ -109,7 +94,7 @@
   function format_time(s) {
     const dtFormat = new Intl.DateTimeFormat("en-US", {
       dateStyle: "short",
-      timeStyle: "short",
+      timeStyle: "full",
       timeZone: "JST",
     });
 
