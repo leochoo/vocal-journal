@@ -41,8 +41,8 @@
 
   const analysisQuery = query(
     collection(db, "analysis"),
-    where("uid", "==", user_status.uid)
-    // orderBy("createdAt", "desc")
+    where("uid", "==", user_status.uid),
+    orderBy("createdAt")
   );
   const unsubscribe = onSnapshot(analysisQuery, (querySnapshot) => {
     var _analysis = [];
